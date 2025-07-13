@@ -1,0 +1,44 @@
+{
+  "english": [
+    {
+      "name": "Erica Meltzer SAT Grammar",
+      "text1": "View Book",
+      "link1": "https://drive.google.com/file/d/1Z0aHjT3TwrDbL_SMHWlNOyqiMCSO1192/view?usp=sharing",
+      "size": "3"
+    },
+    {
+      "name": "Erica Meltzer SAT Reading",
+      "text1": "View Book",
+      "link1": "https://drive.google.com/file/d/1TmxAPQAZdsy7ayKGiRdI0IpKitIEa7KH/view?usp=sharing",
+      "size": "3"
+    }
+  ],
+  "maths": [
+    {
+      "name": "1600.io Maths Orange Book",
+      "text1": "View Book",
+      "link1": "https://drive.google.com/file/d/1cgEjozVjllvomoRLK1yhJQmJUEeLho1O/view?usp=sharing",
+      "size": "3"
+    }
+  ],
+  "combined": [
+    {
+      "name": "Princeton review (2024)",
+      "text1": "View Book",
+      "link1": "https://drive.google.com/file/d/1EC0bbFWLVgEkrt2qTiU0wzc_NI9nALtP/view?usp=sharing",
+      "size": "3"
+    },
+    {
+      "name": "Digital SAT June 2023",
+      "text1": "View Book",
+      "link1": "https://drive.google.com/file/d/1LGIwZ713RirhG9pQhATmX6FOE2yNS1T5/view?usp=sharing",
+      "size": "4"
+    },
+    {
+      "name": "Digital SAT Nov 2023",
+      "text1": "View Book",
+      "link1": "https://drive.google.com/file/d/1927mMCIJgRF2EmVUVYhAb5Mr_HB1n3k4/view?usp=sharing",
+      "size": "4"
+    }
+  ]
+}

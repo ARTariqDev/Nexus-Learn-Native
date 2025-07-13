@@ -11,8 +11,15 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^2.2.0",
+    "@react-navigation/native": "^7.1.14",
+    "@react-navigation/native-stack": "^7.3.21",
+    "cors": "^2.8.5",
     "expo": "^53.0.19",
+    "expo-secure-store": "^14.2.3",
     "expo-status-bar": "~2.2.3",
+    "express": "^5.1.0",
+    "mongoose": "^8.16.3",
     "nativewind": "latest",
     "react": "19.0.0",
     "react-native": "0.79.5",
@@ -31,5 +38,10 @@
     "typescript": "~5.8.3"
   },
   "main": "node_modules/expo/AppEntry.js",
-  "private": true
+  "private": true,
+  "description": "",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
 }

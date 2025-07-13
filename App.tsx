@@ -1,13 +1,47 @@
-import { ScreenContent } from 'components/ScreenContent';
-import { StatusBar } from 'expo-status-bar';
+import React, { useEffect, useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import * as SecureStore from 'expo-secure-store';
+import { ActivityIndicator, View } from 'react-native';
 
-import './global.css';
+import LandingPage from './pages/LandingPage';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import HomePage from './pages/Home';
+import SATPage from './pages/SAT/SAT';
+import AlevelPage from 'pages/Alevel/Alevel';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
+  const [initialRoute, setInitialRoute] = useState<string | null>(null);
+
+  useEffect(() => {
+    const checkToken = async () => {
+      const token = await SecureStore.getItemAsync('token');
+      setInitialRoute(token ? 'Home' : 'Landing');
+    };
+    checkToken();
+  }, []);
+
+  if (!initialRoute) {
+    return (
+      <View style={{ flex: 1, backgroundColor: '#000', justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#ffaa00" />
+      </View>
+    );
+  }
+
   return (
-    <>
-      <ScreenContent title="Home" path="App.tsx"></ScreenContent>
-      <StatusBar style="auto" />
-    </>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName={initialRoute}>
+        <Stack.Screen name="Landing" component={LandingPage} options={{ headerShown: false }} />
+        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+        <Stack.Screen name="Signup" component={Signup} options={{ headerShown: false }} />
+        <Stack.Screen name="Home" component={HomePage} options={{ headerShown: false }} />
+        <Stack.Screen name="SAT" component={SATPage} options={{ headerShown: false }} />
+        <Stack.Screen name="Alevel" component={AlevelPage} options={{ headerShown: false }} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
