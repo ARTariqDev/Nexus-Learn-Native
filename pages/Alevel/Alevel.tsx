@@ -51,9 +51,9 @@ export default function AlevelPage() {
         <View style={styles.section}>
           <Text style={styles.title}>A Level</Text>
           <View style={styles.grid}>
-            <ResourcesCard title="Physics 9702" route="Alevel/Physics" />
-            <ResourcesCard title="Maths 9709" route="Alevel/Maths" />
-            <ResourcesCard title="Computer Science 9618" route="Alevel/CS" />
+            <ResourcesCard title="Physics 9702" route="Physics" />
+            <ResourcesCard title="Maths 9709" route="Maths" />
+            <ResourcesCard title="Computer Science 9618" route="CS" />
             <ResourcesCard title="Further Maths 9231" route="Alevel/FM" />
             <ResourcesCard title="Information Technology 9626" route="Alevel/IT" />
           </View>

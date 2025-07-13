@@ -10,6 +10,8 @@ import Signup from './pages/Signup';
 import HomePage from './pages/Home';
 import SATPage from './pages/SAT/SAT';
 import AlevelPage from 'pages/Alevel/Alevel';
+import Physics from 'pages/Alevel/Physics/Physics';
+import CSPage from 'pages/Alevel/CS/CS';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +43,8 @@ export default function App() {
         <Stack.Screen name="Home" component={HomePage} options={{ headerShown: false }} />
         <Stack.Screen name="SAT" component={SATPage} options={{ headerShown: false }} />
         <Stack.Screen name="Alevel" component={AlevelPage} options={{ headerShown: false }} />
+        <Stack.Screen name="Physics" component={Physics} options={{ headerShown: false }} />
+        <Stack.Screen name="CS" component={CSPage} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

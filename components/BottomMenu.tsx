@@ -16,7 +16,7 @@ export default function BottomNavBar() {
 
   return (
     <>
-      {/* Bottom Nav Bar */}
+
       <View style={styles.navBar}>
         <TouchableOpacity onPress={() => navigation.navigate('Home' as never)}>
           <Ionicons name="home" size={26} color="#ffaa00" />
@@ -68,7 +68,8 @@ export default function BottomNavBar() {
 const styles = StyleSheet.create({
   navBar: {
     position: 'absolute',
-    bottom: 20, // Add margin from bottom to avoid overlap with phone UI
+    bottom: 0,
+    paddingBottom:20,
     left: 0,
     right: 0,
     backgroundColor: '#111',
