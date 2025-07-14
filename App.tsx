@@ -12,6 +12,7 @@ import SATPage from './pages/SAT/SAT';
 import AlevelPage from 'pages/Alevel/Alevel';
 import Physics from 'pages/Alevel/Physics/Physics';
 import CSPage from 'pages/Alevel/CS/CS';
+import StatsPage from 'pages/Stats';
 
 const Stack = createNativeStackNavigator();
 
@@ -45,6 +46,7 @@ export default function App() {
         <Stack.Screen name="Alevel" component={AlevelPage} options={{ headerShown: false }} />
         <Stack.Screen name="Physics" component={Physics} options={{ headerShown: false }} />
         <Stack.Screen name="CS" component={CSPage} options={{ headerShown: false }} />
+        <Stack.Screen name="Stats" component={StatsPage} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

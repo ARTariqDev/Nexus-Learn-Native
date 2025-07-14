@@ -97,6 +97,8 @@ export default function CSPage() {
                     onValueChange={(itemValue) => setYear(itemValue)}
                     style={styles.picker}
                     dropdownIconColor="#fff"
+                    mode="dropdown"
+                    dropdownIconRippleColor="#ffaa00"
                   >
                     {allYears.map((y) => (
                       <Picker.Item key={y} label={y} value={y} />
@@ -113,6 +115,8 @@ export default function CSPage() {
                     onValueChange={(itemValue) => setSession(itemValue)}
                     style={styles.picker}
                     dropdownIconColor="#fff"
+                     mode="dropdown"
+                     dropdownIconRippleColor="#ffaa00"
                   >
                     <Picker.Item label="May/June" value="may" />
                     <Picker.Item label="Oct/Nov" value="november" />
@@ -128,6 +132,8 @@ export default function CSPage() {
                     onValueChange={(itemValue) => setPaperGroup(itemValue)}
                     style={styles.picker}
                     dropdownIconColor="#fff"
+                    mode="dropdown" 
+                    dropdownIconRippleColor="#ffaa00"
                   >
                     <Picker.Item label="P1 (11,12,13)" value="1" />
                     <Picker.Item label="P2 (21,22,23)" value="2" />

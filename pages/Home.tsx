@@ -6,20 +6,18 @@ import {
   ScrollView,
   ActivityIndicator,
   TouchableOpacity,
-  Modal,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
+import { jwtDecode } from 'jwt-decode';
 import { useFonts } from 'expo-font';
 import ResourcesCard from 'components/Resources';
-import { Ionicons } from '@expo/vector-icons';
 import Footer from 'components/BottomMenu';
 import Header from 'components/Header';
 
 export default function HomePage() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [menuVisible, setMenuVisible] = useState(false);
   const navigation = useNavigation();
 
   const [fontsLoaded] = useFonts({
@@ -27,23 +25,42 @@ export default function HomePage() {
   });
 
   useEffect(() => {
-    const checkToken = async () => {
+    const checkTokenAndFetchUser = async () => {
       const token = await SecureStore.getItemAsync('token');
       if (!token) {
         navigation.navigate('Login' as never);
-      } else {
-        setUser({ username: 'User' });
+        return;
       }
-      setLoading(false);
+
+      try {
+        const decoded = jwtDecode(token) as { username: string };
+        const res = await fetch(`https://nexuslearn-mu.vercel.app/api/user?username=${decoded.username}`);
+        const data = await res.json();
+
+        if (res.ok && data.username) {
+          setUser(data);
+        } else {
+          console.warn('Fallback to decoded username');
+          setUser({ username: decoded.username });
+        }
+      } catch (err) {
+        console.error('Error decoding token or fetching user:', err);
+        try {
+          const fallback = jwtDecode(token) as { username: string };
+          setUser({ username: fallback.username });
+        } catch (e) {
+          console.error('Fallback decode failed:', e);
+        }
+      } finally {
+        setLoading(false);
+      }
     };
 
-    checkToken();
+    checkTokenAndFetchUser();
   }, []);
 
-  const handleLogout = async () => {
-    await SecureStore.deleteItemAsync('token');
-    setMenuVisible(false);
-    navigation.navigate('Landing' as never);
+  const handleViewStats = () => {
+    navigation.navigate('Stats' as never);
   };
 
   if (!fontsLoaded || loading) {
@@ -57,11 +74,17 @@ export default function HomePage() {
 
   return (
     <View style={{ flex: 1, backgroundColor: '#000' }}>
-      {/* Header */}
-      <Header/>
+      <Header />
 
-      {/* Main Content */}
       <ScrollView style={styles.container}>
+        <View style={styles.welcomeBox}>
+          <Text style={styles.welcomeText}>
+            Welcome back {"\n"}
+            {user?.username ? `${user.username}` : ''}!
+          </Text>
+          <Text style={styles.subText}>Explore resources and track your progress</Text>
+        </View>
+
         <View style={styles.section}>
           <Text style={styles.title}>Resources</Text>
           <View style={styles.grid}>
@@ -73,12 +96,14 @@ export default function HomePage() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.subtitle}>
-            Under Construction, more{'\n'}features on the Way!
-          </Text>
+          <Text style={styles.statsTitle}>Insights</Text>
+          <TouchableOpacity onPress={handleViewStats} style={styles.statsCard}>
+            <Text style={styles.statsCardText}>View Your Stats</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
-      <Footer/>
+
+      <Footer />
     </View>
   );
 }
@@ -99,71 +124,65 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000',
   },
-  header: {
-    marginTop: 40,
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
+  welcomeBox: {
+    paddingHorizontal: 20,
+    paddingVertical: 24,
     backgroundColor: '#111',
-    borderBottomWidth: 1,
-    borderBottomColor: '#222',
-    justifyContent: 'space-between',
+    margin: 16,
+    borderRadius: 12,
+    alignItems: 'center',
   },
-  headerTitle: {
-    color: '#fff',
+  welcomeText: {
     fontSize: 20,
-    fontFamily: 'Monoton',
+    fontWeight: 'bold',
     textAlign: 'center',
+    fontFamily: 'monoton',
+    color: '#ffaa00',
+    marginBottom: 4,
+  },
+  subText: {
+    color: '#ccc',
+    fontSize: 14,
   },
   section: {
     backgroundColor: '#111',
     borderRadius: 12,
     padding: 16,
-    margin: 16,
+    marginHorizontal: 16,
+    marginBottom: 24,
   },
   title: {
     color: '#fff',
-    fontSize: 32,
+    fontSize: 28,
     fontFamily: 'Monoton',
     textAlign: 'center',
     marginBottom: 20,
-  },
-  subtitle: {
-    color: '#aaa',
-    fontSize: 24,
-    fontFamily: 'Monoton',
-    textAlign: 'center',
-    lineHeight: 32,
   },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    gap: 16,
+    rowGap: 16,
+    columnGap: 12,
   },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: '#000000cc',
-    justifyContent: 'flex-start',
-    paddingTop: 60,
-  },
-  menu: {
-    backgroundColor: '#111',
-    padding: 20,
-    borderTopRightRadius: 20,
-    borderBottomRightRadius: 20,
-    width: '70%',
-  },
-  menuTitle: {
-    fontSize: 20,
-    color: '#ffaa00',
-    fontWeight: 'bold',
-    marginTop: 16,
-    marginBottom: 24,
-  },
-  menuItem: {
+  statsTitle: {
     color: '#fff',
-    fontSize: 16,
-    paddingVertical: 10,
+    fontSize: 28,
+    fontFamily: 'Monoton',
+    fontWeight: '600',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  statsCard: {
+    backgroundColor: '#ffaa00',
+    paddingVertical: 16,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  statsCardText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#000',
   },
 });
