@@ -54,8 +54,8 @@ export default function AlevelPage() {
             <ResourcesCard title="Physics 9702" route="Physics" />
             <ResourcesCard title="Maths 9709" route="Maths" />
             <ResourcesCard title="Computer Science 9618" route="CS" />
-            <ResourcesCard title="Further Maths 9231" route="Alevel/FM" />
-            <ResourcesCard title="Information Technology 9626" route="Alevel/IT" />
+            <ResourcesCard title="Further Maths 9231" route="FM" />
+            <ResourcesCard title="Information Technology 9626" route="IT" />
           </View>
         </View>
       </ScrollView>
