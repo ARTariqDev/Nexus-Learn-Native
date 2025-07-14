@@ -15,6 +15,7 @@ import CSPage from 'pages/Alevel/CS/CS';
 import StatsPage from 'pages/Stats';
 import MathsPage from 'pages/Alevel/Maths/Maths';
 import FurtherMathsPage from 'pages/Alevel/FM/FM';
+import ITPage from 'pages/Alevel/IT/IT';
 
 const Stack = createNativeStackNavigator();
 
@@ -51,6 +52,7 @@ export default function App() {
         <Stack.Screen name="Stats" component={StatsPage} options={{ headerShown: false }} />
         <Stack.Screen name="Maths" component={MathsPage} options={{ headerShown: false }} />
         <Stack.Screen name="FM" component={FurtherMathsPage} options={{ headerShown: false }} />
+        <Stack.Screen name="IT" component={ITPage} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
