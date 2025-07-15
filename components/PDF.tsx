@@ -4,8 +4,11 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Linking,
+  Alert,
+  Platform,
 } from 'react-native';
+import * as FileSystem from 'expo-file-system';
+import * as Linking from 'expo-linking';
 
 interface PDFProps {
   name: string;
@@ -35,9 +38,27 @@ export default function PDF({
 
   const fontSize = sizeMap[size] || 8;
 
-  const openLink = async (url: string) => {
-    const supported = await Linking.canOpenURL(url);
-    if (supported) await Linking.openURL(url);
+  const downloadAndOpenPDF = async (url: string, filename: string) => {
+    try {
+      const path = FileSystem.documentDirectory + filename;
+      const fileInfo = await FileSystem.getInfoAsync(path);
+
+      if (!fileInfo.exists) {
+        // Download if not cached
+        const download = await FileSystem.downloadAsync(url, path);
+        if (!download?.uri) throw new Error('Download failed');
+      }
+
+      // Open the local file
+      await Linking.openURL(path);
+    } catch (err) {
+      Alert.alert('Error', 'Failed to load PDF. Make sure you are online or try again later.');
+      console.error(err);
+    }
+  };
+
+  const getFilename = (url: string) => {
+    return url.split('/').pop()?.split('?')[0] || `file_${Date.now()}.pdf`;
   };
 
   return (
@@ -46,7 +67,7 @@ export default function PDF({
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => openLink(link1)}
+        onPress={() => downloadAndOpenPDF(link1, getFilename(link1))}
       >
         <Text style={styles.buttonText}>{text1}</Text>
       </TouchableOpacity>
@@ -54,7 +75,7 @@ export default function PDF({
       {link2 && text2 && (
         <TouchableOpacity
           style={styles.button}
-          onPress={() => openLink(link2)}
+          onPress={() => downloadAndOpenPDF(link2, getFilename(link2))}
         >
           <Text style={styles.buttonText}>{text2}</Text>
         </TouchableOpacity>

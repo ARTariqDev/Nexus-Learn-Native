@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Linking, StyleSheet, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+} from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { jwtDecode } from 'jwt-decode';
+import * as FileSystem from 'expo-file-system';
+import * as Linking from 'expo-linking';
 
 const Yearly = ({ name, size, qp, ms, sf, text1, text2, text3, id, subject }) => {
   const [username, setUsername] = useState(null);
@@ -51,7 +60,15 @@ const Yearly = ({ name, size, qp, ms, sf, text1, text2, text3, id, subject }) =>
       const res = await fetch('https://nexuslearn-mu.vercel.app/api/scores', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, subject, paper: id, scored: scoredNum, total: totalNum, score: scorePercent, date: new Date() }),
+        body: JSON.stringify({
+          username,
+          subject,
+          paper: id,
+          scored: scoredNum,
+          total: totalNum,
+          score: scorePercent,
+          date: new Date(),
+        }),
       });
 
       const data = await res.json();
@@ -68,27 +85,48 @@ const Yearly = ({ name, size, qp, ms, sf, text1, text2, text3, id, subject }) =>
     }
   };
 
+  const getFilename = (url) => {
+    return url?.split('/').pop()?.split('?')[0] || `file_${Date.now()}.pdf`;
+  };
+
+  const openPDF = async (url) => {
+    const filename = getFilename(url);
+    const path = FileSystem.documentDirectory + filename;
+    try {
+      const fileInfo = await FileSystem.getInfoAsync(path);
+      if (!fileInfo.exists) {
+        await FileSystem.downloadAsync(url, path);
+      }
+      await Linking.openURL(path);
+    } catch (err) {
+      console.error('File open error:', err);
+      Alert.alert('Error', 'Could not open file. Please check your connection or try again.');
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text style={[styles.title, { fontSize: 18 + (parseInt(size) || 1) * 2 }]}>{name}</Text>
 
       {percentage !== null && (
-        <Text style={styles.scoreText}>{scored} / {total} → {percentage.toFixed(2)}%</Text>
+        <Text style={styles.scoreText}>
+          {scored} / {total} → {percentage.toFixed(2)}%
+        </Text>
       )}
 
       <View style={styles.buttonRow}>
         {qp && text1 && (
-          <TouchableOpacity onPress={() => Linking.openURL(qp)} style={styles.button}>
+          <TouchableOpacity onPress={() => openPDF(qp)} style={styles.button}>
             <Text style={styles.buttonText}>{text1 === 'View Question Paper' ? 'QP' : text1}</Text>
           </TouchableOpacity>
         )}
         {ms && text2 && (
-          <TouchableOpacity onPress={() => Linking.openURL(ms)} style={styles.button}>
+          <TouchableOpacity onPress={() => openPDF(ms)} style={styles.button}>
             <Text style={styles.buttonText}>{text2 === 'View Mark Scheme' ? 'MS' : text2}</Text>
           </TouchableOpacity>
         )}
         {sf && text3 && (
-          <TouchableOpacity onPress={() => Linking.openURL(sf)} style={[styles.button, { flexGrow: 1 }] }>
+          <TouchableOpacity onPress={() => openPDF(sf)} style={[styles.button, { flexGrow: 1 }]}>
             <Text style={styles.buttonText}>{text3 === 'View Source Files' ? 'SF' : text3}</Text>
           </TouchableOpacity>
         )}
