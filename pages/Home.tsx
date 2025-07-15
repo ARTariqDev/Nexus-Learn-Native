@@ -88,8 +88,8 @@ export default function HomePage() {
         <View style={styles.section}>
           <Text style={styles.title}>Resources</Text>
           <View style={styles.grid}>
-            <ResourcesCard title="O Levels" route="Olevels" />
-            <ResourcesCard title="A Levels" route="Alevel" />
+            <ResourcesCard title="O Level" route="Olevel" />
+            <ResourcesCard title="A Level" route="Alevel" />
             <ResourcesCard title="IGCSE" route="IGCSE" />
             <ResourcesCard title="SAT" route="SAT" />
           </View>

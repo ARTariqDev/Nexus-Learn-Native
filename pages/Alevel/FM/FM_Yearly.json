@@ -52,5 +52,60 @@
     "text1": "View Question Paper",
     "text2": "View Mark Scheme",
     "id": "november_2024_23"
+  },
+  {
+    "name": "November 2024-31",
+    "size": "3",
+    "qp": "https://drive.google.com/file/d/18hnh6q_pBkqQgnT5KD8Gp1yziqhF0AJR/view?usp=sharing",
+    "ms": "https://drive.google.com/file/d/1hqkmuWTA5UxfIkbFsU12WFsYAJV6I1Sa/view?usp=sharing",
+    "text1" : "QP",
+    "text2" :  "MS",
+    "id" : "november_2024_31"
+  },
+  {
+    "name" : "November 2024-32",
+    "size" : "3",
+    "qp": "https://drive.google.com/file/d/1PyiMUm3YVG3KHuYQThrXS0FVz85BW1wi/view?usp=sharing",
+    "ms" : "https://drive.google.com/file/d/1YLSNQ6enAE42LehYrhS5SQQfyBoig6_A/view?usp=sharing",
+    "text1" : "QP",
+    "text2": "MS",
+    "id": "november_2024_32"
+  },
+  {
+    "name" : "November 2024-33",
+    "size" : "3",
+    "qp" : "https://drive.google.com/file/d/19xPwxFHPHnYvWZNcPbPm2-c5fiGM5TNy/view?usp=sharing",
+    "ms" : "https://drive.google.com/file/d/1DC941cUFuwLG5CxPdPIX6qV561dTPEEW/view?usp=sharing",
+    "text1" : "QP",
+    "text2" : "MS",
+    "id" : "november_2024_33"
+  },
+  {
+    "name" : "November 2024-41",
+    "size" : "3",
+    "qp" : "https://drive.google.com/file/d/147rViljmiMxuk_-w4LYt3x6ZtStZeLiM/view?usp=sharing",
+    "ms" : "https://drive.google.com/file/d/1eoy24WDfS-T1Df354Uuaff3z9wS19TI3/view?usp=sharing",
+    "text1" : "QP",
+    "text2" : "MS",
+    "id" : "november_2024_41"
+  },
+  {
+    "name" : "November 2024-42",
+    "size" : "3",
+    "qp" : "https://drive.google.com/file/d/1BHB8n9-BPubzuSeZRAljDcPcJiBAtOcI/view?usp=sharing",
+    "ms" : "https://drive.google.com/file/d/1V0tgYW3miJJ0V1JqSKAFNNSVGn1c5975/view?usp=sharing",
+    "text1" : "QP",
+    "text2" : "MS",
+    "id" : "november_2024_42"
+  },
+  {
+    "name" : "November 2024-43",
+    "size" : "3",
+    "qp" : "https://drive.google.com/file/d/1I3jdzeVlrCuDeWyVHD3qRl922cftrIFO/view?usp=sharing",
+    "ms" : "https://drive.google.com/file/d/1LSn3K_VEUDLkWM9Oee8d-BLcccaltgLc/view?usp=sharing",
+    "text1" : "QP",
+    "text2" : "MS",
+    "id" : "november_2024_43"
   }
+
 ]

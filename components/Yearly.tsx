@@ -48,7 +48,7 @@ const Yearly = ({ name, size, qp, ms, sf, text1, text2, text3, id, subject }) =>
     const scorePercent = (scoredNum / totalNum) * 100;
 
     try {
-      const res = await fetch('https://your-api-url.com/scores', {
+      const res = await fetch('https://nexuslearn-mu.vercel.app/api/scores', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, subject, paper: id, scored: scoredNum, total: totalNum, score: scorePercent, date: new Date() }),
