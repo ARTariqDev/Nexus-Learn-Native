@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   navBar: {
     position: 'absolute',
     bottom: 0,
-    paddingBottom:20,
+    paddingBottom:50,
     left: 0,
     right: 0,
     backgroundColor: '#111',

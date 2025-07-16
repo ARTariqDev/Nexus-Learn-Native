@@ -1,0 +1,18 @@
+{
+  "updates": [
+    {
+      "id": 1,
+      "heading": "New Updates Section!",
+      "text": "Test Update text I guess? dw though more features on the way :) (trying my hardest!)",
+      "date": "2025-07-15",
+      "category": "Feature"
+    },
+    {
+      "id": 2,
+      "heading": "Bug Fixes & Stability",
+      "text": "Fixed several issues including login persistence, resource loading errors, and navigation glitches. The app is now more stable and reliable across all devices. Also fixed issue with the bottom menu",
+      "date": "2025-07-25",
+      "category": "Bug Fix"
+    }
+  ]
+}

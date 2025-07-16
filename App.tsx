@@ -18,6 +18,9 @@ import FurtherMathsPage from 'pages/Alevel/FM/FM';
 import ITPage from 'pages/Alevel/IT/IT';
 import IGCSEPage from 'pages/IGCSE/IGCSE';
 import OlevelPage from 'pages/Olevel/Olevel';
+import Updates from 'pages/Updates/Updates';
+import Blog from 'pages/Updates/Blog';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -57,6 +60,8 @@ export default function App() {
         <Stack.Screen name="IT" component={ITPage} options={{ headerShown: false }} />
         <Stack.Screen name="IGCSE" component={IGCSEPage} options={{ headerShown: false }} />
         <Stack.Screen name="Olevel" component={OlevelPage} options={{ headerShown: false }} />
+        <Stack.Screen name="Blog" component={Blog} options={{ headerShown: false }} />
+        <Stack.Screen name="Updates" component={Updates} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

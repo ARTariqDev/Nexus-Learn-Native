@@ -5,10 +5,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
-  Platform,
+  Linking,
 } from 'react-native';
-import * as FileSystem from 'expo-file-system';
-import * as Linking from 'expo-linking';
 
 interface PDFProps {
   name: string;
@@ -27,90 +25,89 @@ export default function PDF({
   text1,
   text2,
 }: PDFProps) {
-  const sizeMap: Record<string, number> = {
-    '1': 12,
-    '2': 16,
-    '3': 20,
-    '4': 24,
-    '5': 26,
-    '6': 30,
+  const convertDriveLink = (url: string): string => {
+    const match = url?.match(/\/d\/([a-zA-Z0-9_-]+)\//);
+    return match ? `https://drive.google.com/uc?export=download&id=${match[1]}` : url;
   };
 
-  const fontSize = sizeMap[size] || 8;
-
-  const downloadAndOpenPDF = async (url: string, filename: string) => {
+  const handleOpenPDF = async (url: string) => {
     try {
-      const path = FileSystem.documentDirectory + filename;
-      const fileInfo = await FileSystem.getInfoAsync(path);
-
-      if (!fileInfo.exists) {
-        // Download if not cached
-        const download = await FileSystem.downloadAsync(url, path);
-        if (!download?.uri) throw new Error('Download failed');
+      const finalUrl = convertDriveLink(url);
+      const supported = await Linking.canOpenURL(finalUrl);
+      if (supported) {
+        await Linking.openURL(finalUrl);
+      } else {
+        Alert.alert('Error', 'Cannot open the PDF link.');
       }
-
-      // Open the local file
-      await Linking.openURL(path);
     } catch (err) {
-      Alert.alert('Error', 'Failed to load PDF. Make sure you are online or try again later.');
+      Alert.alert('Error', 'Could not open file.');
       console.error(err);
     }
   };
 
-  const getFilename = (url: string) => {
-    return url.split('/').pop()?.split('?')[0] || `file_${Date.now()}.pdf`;
-  };
-
   return (
-    <View style={styles.card}>
-      <Text style={[styles.title, { fontSize }]}>{name}</Text>
+    <View style={styles.container}>
+      <Text style={[styles.title, { fontSize: 18 + (parseInt(size) || 1) * 2 }]}>
+        {name || 'Untitled'}
+      </Text>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => downloadAndOpenPDF(link1, getFilename(link1))}
-      >
-        <Text style={styles.buttonText}>{text1}</Text>
-      </TouchableOpacity>
-
-      {link2 && text2 && (
+      <View style={styles.buttonRow}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => downloadAndOpenPDF(link2, getFilename(link2))}
+          onPress={() => handleOpenPDF(link1)}
         >
-          <Text style={styles.buttonText}>{text2}</Text>
+          <Text style={styles.buttonText}>{text1}</Text>
         </TouchableOpacity>
-      )}
+
+        {link2 && text2 && (
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => handleOpenPDF(link2)}
+          >
+            <Text style={styles.buttonText}>{text2}</Text>
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  card: {
+  container: {
     backgroundColor: '#111',
     borderColor: '#6c6c6c',
     borderWidth: 2,
-    borderRadius: 16,
+    borderRadius: 12,
     padding: 16,
-    width: '48%',
-    minHeight: 200,
     marginBottom: 16,
-    justifyContent: 'space-between',
+    width: '50%',
   },
   title: {
-    fontFamily: 'Monoton',
     color: '#ffaa00',
     textAlign: 'center',
-    marginBottom: 12,
+    marginBottom: 8,
+    fontFamily: 'Monoton',
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+    gap: 6,
+    marginBottom: 8,
   },
   button: {
     backgroundColor: '#ffaa00',
-    paddingVertical: 10,
-    borderRadius: 10,
-    marginTop: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 6,
+    flexGrow: 1,
+    marginHorizontal: 2,
+    marginVertical: 2,
   },
   buttonText: {
+    textAlign: 'center',
     color: '#000',
     fontWeight: 'bold',
-    textAlign: 'center',
+    fontSize: 12,
   },
 });

@@ -6,32 +6,61 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  Linking,
 } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { jwtDecode } from 'jwt-decode';
-import * as FileSystem from 'expo-file-system';
-import * as Linking from 'expo-linking';
 
-const Yearly = ({ name, size, qp, ms, sf, text1, text2, text3, id, subject }) => {
-  const [username, setUsername] = useState(null);
-  const [scored, setScored] = useState('');
-  const [total, setTotal] = useState('');
-  const [percentage, setPercentage] = useState(null);
+interface YearlyProps {
+  name: string;
+  size: string;
+  qp?: string;
+  ms?: string;
+  sf?: string;
+  text1?: string;
+  text2?: string;
+  text3?: string;
+  id: string;
+  subject: string;
+}
+
+const Yearly: React.FC<YearlyProps> = ({ 
+  name, 
+  size, 
+  qp, 
+  ms, 
+  sf, 
+  text1, 
+  text2, 
+  text3, 
+  id, 
+  subject 
+}) => {
+  const [username, setUsername] = useState<string | null>(null);
+  const [scored, setScored] = useState<string>('');
+  const [total, setTotal] = useState<string>('');
+  const [percentage, setPercentage] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchScore = async () => {
-      const token = await SecureStore.getItemAsync('token');
-      if (!token) return;
-
       try {
-        const decoded = jwtDecode(token);
+        const token = await SecureStore.getItemAsync('token');
+        if (!token) return;
+
+        const decoded = jwtDecode<{ username: string }>(token);
         setUsername(decoded.username);
 
         const url = `https://nexuslearn-mu.vercel.app/api/scores?username=${decoded.username}&subject=${subject}&paper=${id}`;
         const res = await fetch(url);
+        
+        if (!res.ok) {
+          console.error('Failed to fetch score:', res.status);
+          return;
+        }
+
         const data = await res.json();
 
-        if (data && data.score !== undefined) {
+        if (data?.score !== undefined) {
           setScored(data.scored?.toString() || '');
           setTotal(data.total?.toString() || '');
           setPercentage(data.score);
@@ -44,14 +73,40 @@ const Yearly = ({ name, size, qp, ms, sf, text1, text2, text3, id, subject }) =>
     fetchScore();
   }, [id, subject]);
 
+  const convertDriveLink = (url: string): string => {
+    const match = url?.match(/\/d\/([a-zA-Z0-9_-]+)\//);
+    return match ? `https://drive.google.com/uc?export=download&id=${match[1]}` : url;
+  };
+
+  const openPDF = async (url: string) => {
+    try {
+      const finalUrl = convertDriveLink(url);
+      const supported = await Linking.canOpenURL(finalUrl);
+      if (supported) {
+        await Linking.openURL(finalUrl);
+      } else {
+        Alert.alert('Error', 'Cannot open the PDF link.');
+      }
+    } catch (err) {
+      Alert.alert('Error', 'Could not open file.');
+      console.error(err);
+    }
+  };
+
   const handleSubmit = async () => {
-    if (!username) return Alert.alert('Error', 'You must be logged in to submit a score.');
+    if (!username) {
+      return Alert.alert('Error', 'You must be logged in to submit a score.');
+    }
 
     const scoredNum = parseFloat(scored);
     const totalNum = parseFloat(total);
-
+    
     if (isNaN(scoredNum) || isNaN(totalNum) || totalNum === 0) {
       return Alert.alert('Invalid Input', 'Please enter valid marks.');
+    }
+
+    if (scoredNum < 0 || scoredNum > totalNum) {
+      return Alert.alert('Invalid Input', 'Scored marks cannot be negative or greater than total marks.');
     }
 
     const scorePercent = (scoredNum / totalNum) * 100;
@@ -67,11 +122,12 @@ const Yearly = ({ name, size, qp, ms, sf, text1, text2, text3, id, subject }) =>
           scored: scoredNum,
           total: totalNum,
           score: scorePercent,
-          date: new Date(),
+          date: new Date().toISOString(),
         }),
       });
 
       const data = await res.json();
+      
       if (res.ok) {
         setPercentage(scorePercent);
         setScored(scoredNum.toString());
@@ -81,32 +137,16 @@ const Yearly = ({ name, size, qp, ms, sf, text1, text2, text3, id, subject }) =>
         Alert.alert('Error', data.error || 'Failed to save score');
       }
     } catch (err) {
-      Alert.alert('Error', 'Network error');
-    }
-  };
-
-  const getFilename = (url) => {
-    return url?.split('/').pop()?.split('?')[0] || `file_${Date.now()}.pdf`;
-  };
-
-  const openPDF = async (url) => {
-    const filename = getFilename(url);
-    const path = FileSystem.documentDirectory + filename;
-    try {
-      const fileInfo = await FileSystem.getInfoAsync(path);
-      if (!fileInfo.exists) {
-        await FileSystem.downloadAsync(url, path);
-      }
-      await Linking.openURL(path);
-    } catch (err) {
-      console.error('File open error:', err);
-      Alert.alert('Error', 'Could not open file. Please check your connection or try again.');
+      Alert.alert('Error', 'Network error. Please check your connection and try again.');
+      console.error('Network error:', err);
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.title, { fontSize: 18 + (parseInt(size) || 1) * 2 }]}>{name}</Text>
+      <Text style={[styles.title, { fontSize: 18 + (parseInt(size) || 1) * 2 }]}>
+        {name || 'Untitled'}
+      </Text>
 
       {percentage !== null && (
         <Text style={styles.scoreText}>
@@ -117,17 +157,23 @@ const Yearly = ({ name, size, qp, ms, sf, text1, text2, text3, id, subject }) =>
       <View style={styles.buttonRow}>
         {qp && text1 && (
           <TouchableOpacity onPress={() => openPDF(qp)} style={styles.button}>
-            <Text style={styles.buttonText}>{text1 === 'View Question Paper' ? 'QP' : text1}</Text>
+            <Text style={styles.buttonText}>
+              {text1 === 'View Question Paper' ? 'QP' : text1}
+            </Text>
           </TouchableOpacity>
         )}
         {ms && text2 && (
           <TouchableOpacity onPress={() => openPDF(ms)} style={styles.button}>
-            <Text style={styles.buttonText}>{text2 === 'View Mark Scheme' ? 'MS' : text2}</Text>
+            <Text style={styles.buttonText}>
+              {text2 === 'View Mark Scheme' ? 'MS' : text2}
+            </Text>
           </TouchableOpacity>
         )}
         {sf && text3 && (
-          <TouchableOpacity onPress={() => openPDF(sf)} style={[styles.button, { flexGrow: 1 }]}>
-            <Text style={styles.buttonText}>{text3 === 'View Source Files' ? 'SF' : text3}</Text>
+          <TouchableOpacity onPress={() => openPDF(sf)} style={styles.button}>
+            <Text style={styles.buttonText}>
+              {text3 === 'View Source Files' ? 'SF' : text3}
+            </Text>
           </TouchableOpacity>
         )}
       </View>
@@ -137,6 +183,7 @@ const Yearly = ({ name, size, qp, ms, sf, text1, text2, text3, id, subject }) =>
           value={scored}
           onChangeText={setScored}
           placeholder="Scored"
+          placeholderTextColor="#888"
           keyboardType="numeric"
           style={styles.input}
         />
@@ -144,10 +191,12 @@ const Yearly = ({ name, size, qp, ms, sf, text1, text2, text3, id, subject }) =>
           value={total}
           onChangeText={setTotal}
           placeholder="Total"
+          placeholderTextColor="#888"
           keyboardType="numeric"
           style={styles.input}
         />
       </View>
+
       <TouchableOpacity onPress={handleSubmit} style={styles.submitButton}>
         <Text style={styles.submitButtonText}>Save Score</Text>
       </TouchableOpacity>
@@ -189,7 +238,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 6,
-    flexGrow: 1,
+    flex: 1,
     marginHorizontal: 2,
     marginVertical: 2,
   },
