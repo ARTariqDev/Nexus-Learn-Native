@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as SecureStore from 'expo-secure-store';
 import { ActivityIndicator, View } from 'react-native';
+import 'react-native-screens/reanimated';
 
 import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
@@ -20,6 +21,9 @@ import IGCSEPage from 'pages/IGCSE/IGCSE';
 import OlevelPage from 'pages/Olevel/Olevel';
 import Updates from 'pages/Updates/Updates';
 import Blog from 'pages/Updates/Blog';
+import Contribute from 'pages/Contribute';
+import AccOPage from 'pages/Olevel/AccO/AccO';
+import MathsOPage from 'pages/Olevel/MathsO/MathsO';
 
 
 const Stack = createNativeStackNavigator();
@@ -62,6 +66,9 @@ export default function App() {
         <Stack.Screen name="Olevel" component={OlevelPage} options={{ headerShown: false }} />
         <Stack.Screen name="Blog" component={Blog} options={{ headerShown: false }} />
         <Stack.Screen name="Updates" component={Updates} options={{ headerShown: false }} />
+        <Stack.Screen name="Contribute" component={Contribute} options={{ headerShown: false }} />
+        <Stack.Screen name="AccO" component={AccOPage} options={{ headerShown: false }} />
+        <Stack.Screen name="MathsO" component={MathsOPage} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

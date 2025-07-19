@@ -48,6 +48,9 @@ export default function ITPage() {
   return (
     <View style={styles.pageContainer}>
       <Header />
+      <Text style={[styles.pageTitle, { fontFamily: 'Monoton' }]}>
+                            A Level IT 9626
+      </Text>
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={styles.section}>
           <View style={styles.headerRow}>
@@ -78,6 +81,14 @@ const styles = StyleSheet.create({
   pageContainer: {
     flex: 1,
     backgroundColor: '#000',
+  },
+  pageTitle: {
+    color: '#ffaa00',
+    fontSize: 28,
+    textAlign: 'center',
+    marginTop: 24,
+    marginBottom: 24,
+    letterSpacing: 1.5,
   },
   contentContainer: {
     padding: 16,

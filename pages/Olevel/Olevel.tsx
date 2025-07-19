@@ -55,6 +55,7 @@ export default function OlevelPage() {
             <ResourcesCard title="Maths 4024" route="MathsO" />
             <ResourcesCard title="Islamiyat 2058" route="Islamiyat" />
             <ResourcesCard title="Add Maths 4037" route="AMO" />
+            <ResourcesCard title="Accounting 7707" route="AccO" />
           </View>
         </View>
       </ScrollView>

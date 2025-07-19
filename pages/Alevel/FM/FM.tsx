@@ -64,6 +64,9 @@ export default function FurtherMathsPage() {
   return (
     <View style={styles.pageContainer}>
       <Header />
+      <Text style={[styles.pageTitle, { fontFamily: 'Monoton' }]}>
+                      A Level FM 9231
+      </Text>
       <ScrollView contentContainerStyle={styles.contentContainer}>
         {/* Sir Amjad Section */}
         <View style={styles.section}>
@@ -209,6 +212,14 @@ const styles = StyleSheet.create({
   pageContainer: {
     flex: 1,
     backgroundColor: '#000',
+  },
+  pageTitle: {
+    color: '#ffaa00',
+    fontSize: 28,
+    textAlign: 'center',
+    marginTop: 24,
+    marginBottom: 24,
+    letterSpacing: 1.5,
   },
   contentContainer: {
     padding: 16,

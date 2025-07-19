@@ -52,8 +52,12 @@ export default function MathsPage() {
     <View style={styles.container}>
       <Header />
 
+      <Text style={[styles.pageTitle, { fontFamily: 'Monoton' }]}>
+                                  A Level Maths 9709
+      </Text>
+
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {/* Topicals P1 Section */}
+
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={[styles.sectionTitle, { fontFamily: 'Monoton' }]}>Topicals P1</Text>
@@ -103,6 +107,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000',
+  },
+  pageTitle: {
+    color: '#ffaa00',
+    fontSize: 28,
+    textAlign: 'center',
+    marginTop: 24,
+    marginBottom: 24,
+    letterSpacing: 1.5,
   },
   scrollContainer: {
     padding: 16,

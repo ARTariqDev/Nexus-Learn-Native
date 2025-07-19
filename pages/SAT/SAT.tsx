@@ -87,14 +87,18 @@ export default function SATPage() {
 
   return (
     <View style={{ flex: 1, backgroundColor: '#000' }}>
-
       <Header/>
 
-      <ScrollView style={styles.container}>
+      <ScrollView 
+        style={styles.container}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
         {renderSection('SAT - English', data.english, showEnglish, setShowEnglish)}
         {renderSection('SAT - Maths', data.maths, showMaths, setShowMaths)}
         {renderSection('SAT - Combined Resources', data.combined, showCombined, setShowCombined)}
       </ScrollView>
+      
       <Footer />
     </View>
   );
@@ -105,6 +109,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
     flex: 1,
     padding: 16,
+  },
+  scrollContent: {
+    paddingBottom: 100, // Add padding to account for bottom navigation
   },
   loadingScreen: {
     flex: 1,

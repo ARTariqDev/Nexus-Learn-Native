@@ -22,16 +22,17 @@ export default function Header() {
 const styles = StyleSheet.create({
   header: {
     textAlign: 'center',
-    marginTop: 40,
-    padding: 16,
+    padding: 30,
     backgroundColor: '#111',
     borderBottomWidth: 1,
     borderBottomColor: '#222',
     justifyContent: 'space-between',
+    paddingTop : 50,
+    paddingBottom: 30
   },
   headerTitle: {
     color: '#fff',
-    fontSize: 30,
+    fontSize: 35,
     fontFamily: 'Monoton',
     textAlign: 'center',
   },

@@ -51,6 +51,11 @@ export default function Physics() {
     <View style={styles.wrapper}>
       <Header />
 
+      <Text style={[styles.pageTitle, { fontFamily: 'Monoton' }]}>
+                                        A Level Physics 9702
+      </Text>
+      
+
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.section}>
           <View style={styles.headerRow}>
@@ -92,6 +97,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000',
   },
+  pageTitle: {
+    color: '#ffaa00',
+    fontSize: 28,
+    textAlign: 'center',
+    marginTop: 24,
+    marginBottom: 24,
+    letterSpacing: 1.5,
+  },
   loadingScreen: {
     flex: 1,
     backgroundColor: '#000',
@@ -105,7 +118,7 @@ const styles = StyleSheet.create({
   },
   container: {
     padding: 16,
-    paddingBottom: 80, // Space for footer
+    paddingBottom: 80, 
   },
   section: {
     backgroundColor: '#111',

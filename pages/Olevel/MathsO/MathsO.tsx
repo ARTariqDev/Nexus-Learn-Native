@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -12,13 +13,16 @@ import { useNavigation } from '@react-navigation/native';
 import Footer from 'components/BottomMenu';
 import Yearly from 'components/Yearly';
 import PDF from 'components/PDF';
-import csYearlyData from './CS_Yearly.json';
-import csBooks from './CS_Books.json';
+import mathsYearlyData from './MathsO_Yearly.json';
+import mathsBooks from './MathsO_Books.json';
 import { useFonts } from 'expo-font';
 import Header from 'components/Header';
 import { Picker } from '@react-native-picker/picker';
 
-export default function CSPage() {
+
+
+
+export default function MathsOPage() {
   const navigation = useNavigation();
   const [user, setUser] = useState(null);
   const [year, setYear] = useState('2024');
@@ -43,8 +47,10 @@ export default function CSPage() {
     checkToken();
   }, []);
 
-  const allYears = [...new Set(csYearlyData.map((item) => item.id.split('_')[1]))].sort().reverse();
-  const filtered = csYearlyData.filter((item) => {
+  // Extract all years from data
+  const allYears = [...new Set(mathsYearlyData.map((item) => item.id.split('_')[1]))].sort().reverse();
+  // Filter for session, year, and paper group
+  const filtered = mathsYearlyData.filter((item) => {
     const [sess, yr, code] = item.id.split('_');
     return sess === session.toLowerCase() && yr === year && code.startsWith(paperGroup);
   });
@@ -61,10 +67,10 @@ export default function CSPage() {
   return (
     <View style={styles.pageContainer}>
       <Header />
-      <Text style={[styles.pageTitle, { fontFamily: 'Monoton' }]}>
-                A Level CS 9618
-      </Text>
       <ScrollView contentContainerStyle={styles.contentContainer}>
+        {/* Page Title */}
+        <Text style={[styles.pageTitle, { fontFamily: 'Monoton' }]}>O Level Mathematics 4024</Text>
+
         {/* Books Section */}
         <View style={styles.section}>
           <View style={styles.headerRow}>
@@ -74,9 +80,11 @@ export default function CSPage() {
             </TouchableOpacity>
           </View>
           {showBooks && (
-            <View style={styles.grid}>
-              {csBooks.map((book, index) => (
-                <PDF key={index} {...book} />
+            <View style={styles.bookList}>
+              {mathsBooks.map((book, idx) => (
+                <View key={idx} style={styles.bookRow}>
+                  <PDF {...book} />
+                </View>
               ))}
             </View>
           )}
@@ -118,11 +126,12 @@ export default function CSPage() {
                     onValueChange={(itemValue) => setSession(itemValue)}
                     style={styles.picker}
                     dropdownIconColor="#fff"
-                     mode="dropdown"
-                     dropdownIconRippleColor="#ffaa00"
+                    mode="dropdown"
+                    dropdownIconRippleColor="#ffaa00"
                   >
                     <Picker.Item label="May/June" value="may" />
                     <Picker.Item label="Oct/Nov" value="november" />
+                    <Picker.Item label="Feb/Mar" value="march" />
                   </Picker>
                 </View>
               </View>
@@ -135,13 +144,11 @@ export default function CSPage() {
                     onValueChange={(itemValue) => setPaperGroup(itemValue)}
                     style={styles.picker}
                     dropdownIconColor="#fff"
-                    mode="dropdown" 
+                    mode="dropdown"
                     dropdownIconRippleColor="#ffaa00"
                   >
                     <Picker.Item label="P1 (11,12,13)" value="1" />
                     <Picker.Item label="P2 (21,22,23)" value="2" />
-                    <Picker.Item label="P3 (31,32,33)" value="3" />
-                    <Picker.Item label="P4 (41,42,43)" value="4" />
                   </Picker>
                 </View>
               </View>
@@ -149,7 +156,7 @@ export default function CSPage() {
               <View style={styles.grid}>
                 {filtered.length > 0 ? (
                   filtered.map((item, index) => (
-                    <Yearly key={index} {...item} subject="CS" />
+                    <Yearly key={index} {...item} subject="MathsO" />
                   ))
                 ) : (
                   <Text style={styles.noResultsText}>No papers found for this selection.</Text>
@@ -173,17 +180,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000',
   },
-   pageTitle: {
-    color: '#ffaa00',
-    fontSize: 28,
-    textAlign: 'center',
-    marginTop: 24,
-    marginBottom: 24,
-    letterSpacing: 1.5,
-  },
   contentContainer: {
     padding: 16,
     paddingBottom: 160,
+  },
+  pageTitle: {
+    color: '#ffaa00',
+    fontSize: 28,
+    textAlign: 'center',
+    marginBottom: 24,
+    letterSpacing: 1.5,
   },
   section: {
     backgroundColor: '#111',
@@ -212,11 +218,16 @@ const styles = StyleSheet.create({
     color: '#000',
     fontWeight: 'bold',
   },
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 16,
-    justifyContent: 'space-between',
+  bookList: {
+    flexDirection: 'column',
+    gap: 14,
+    alignItems: 'center',
+    width: '100%',
+  },
+  bookRow: {
+    width: '98%',
+    alignItems: 'center',
+    alignSelf: 'center',
   },
   selectorRow: {
     marginBottom: 12,

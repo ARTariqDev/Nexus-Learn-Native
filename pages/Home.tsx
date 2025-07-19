@@ -122,6 +122,10 @@ export default function HomePage() {
     navigation.navigate('Updates' as never);
   };
 
+  const handleContribute = () => {
+    navigation.navigate('Contribute' as never);
+  };
+
   const getUpdateTypeColor = (category: string) => {
     if (!category) return '#757575'; // Default color for undefined category
     
@@ -227,10 +231,17 @@ export default function HomePage() {
           </View>
         </View>
 
-        <View style={[styles.section, styles.lastSection]}>
+        <View style={styles.section}>
           <Text style={styles.statsTitle}>Insights</Text>
           <TouchableOpacity onPress={handleViewStats} style={styles.statsCard}>
             <Text style={styles.statsCardText}>View Your Stats</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={[styles.section, styles.lastSection]}>
+          <Text style={styles.contributeTitle}>FeedBack/Contribute</Text>
+          <TouchableOpacity onPress={handleContribute} style={styles.contributeCard}>
+            <Text style={styles.contributeCardText}>Share Your Feedback</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -361,7 +372,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   title: {
-    color: '#fff',
+    color: '#e67d7d',
     fontSize: 28,
     fontFamily: 'Monoton',
     textAlign: 'center',
@@ -375,7 +386,7 @@ const styles = StyleSheet.create({
     columnGap: 12,
   },
   statsTitle: {
-    color: '#fff',
+    color: '#3d9fea',
     fontSize: 28,
     fontFamily: 'Monoton',
     fontWeight: '600',
@@ -393,6 +404,25 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: '#000',
+  },
+  contributeTitle: {
+    color: '#85a978',
+    fontSize: 28,
+    fontFamily: 'Monoton',
+    fontWeight: '600',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  contributeCard: {
+    backgroundColor: '#ffaa00',
+    paddingVertical: 16,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  contributeCardText: {
+    fontSize: 18,
+    fontWeight: 'bold'
   },
   lastSection: {
     marginBottom: 100,
