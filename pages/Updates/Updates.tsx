@@ -19,7 +19,7 @@ interface Update {
   heading: string;
   text: string;
   date: string;
-  category: string;
+  category: string | string[]; // Allow both single string and array
 }
 
 export default function Updates() {
@@ -69,6 +69,29 @@ export default function Updates() {
     }
   };
 
+  const getCategories = (category: string | string[]): string[] => {
+    return Array.isArray(category) ? category : [category];
+  };
+
+  const renderCategoryBadges = (categories: string[]) => {
+    return (
+      <View style={styles.categoriesWrapper}>
+        {categories.map((cat, index) => (
+          <View
+            key={index}
+            style={[
+              styles.categoryBadge,
+              { backgroundColor: getCategoryColor(cat) },
+              index > 0 && styles.categoryBadgeSpacing
+            ]}
+          >
+            <Text style={styles.categoryText}>{cat}</Text>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
   if (!fontsLoaded || loading) {
     return (
       <View style={styles.loadingScreen}>
@@ -91,41 +114,38 @@ export default function Updates() {
         </View>
 
         <View style={styles.updatesContainer}>
-          {updates.map((update, index) => (
-            <View 
-              key={update.id} 
-              style={[
-                styles.updateCard,
-                index === updates.length - 1 && styles.lastUpdateCard
-              ]}
-            >
-              <View style={styles.updateHeader}>
-                <View style={styles.categoryContainer}>
-                  <View
-                    style={[
-                      styles.categoryBadge,
-                      { backgroundColor: getCategoryColor(update.category) },
-                    ]}
-                  >
-                    <Text style={styles.categoryText}>{update.category}</Text>
-                  </View>
-                  <Text style={styles.dateText}>{formatDate(update.date)}</Text>
-                </View>
-              </View>
-
-              <Text style={styles.updateHeading}>{update.heading}</Text>
-              <Text style={styles.updateText} numberOfLines={3}>
-                {update.text}
-              </Text>
-
-              <TouchableOpacity
-                style={styles.readMoreButton}
-                onPress={() => handleReadMore(update)}
+          {updates.map((update, index) => {
+            const categories = getCategories(update.category);
+            
+            return (
+              <View 
+                key={update.id} 
+                style={[
+                  styles.updateCard,
+                  index === updates.length - 1 && styles.lastUpdateCard
+                ]}
               >
-                <Text style={styles.readMoreText}>Read More</Text>
-              </TouchableOpacity>
-            </View>
-          ))}
+                <View style={styles.updateHeader}>
+                  <View style={styles.categoryContainer}>
+                    {renderCategoryBadges(categories)}
+                    <Text style={styles.dateText}>{formatDate(update.date)}</Text>
+                  </View>
+                </View>
+
+                <Text style={styles.updateHeading}>{update.heading}</Text>
+                <Text style={styles.updateText} numberOfLines={3}>
+                  {update.text}
+                </Text>
+
+                <TouchableOpacity
+                  style={styles.readMoreButton}
+                  onPress={() => handleReadMore(update)}
+                >
+                  <Text style={styles.readMoreText}>Read More</Text>
+                </TouchableOpacity>
+              </View>
+            );
+          })}
         </View>
       </ScrollView>
 
@@ -194,12 +214,23 @@ const styles = StyleSheet.create({
   categoryContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    flexWrap: 'wrap',
+  },
+  categoriesWrapper: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    flex: 1,
+    marginRight: 8,
   },
   categoryBadge: {
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 12,
+    marginBottom: 4,
+  },
+  categoryBadgeSpacing: {
+    marginLeft: 6,
   },
   categoryText: {
     color: '#000',
@@ -209,6 +240,7 @@ const styles = StyleSheet.create({
   dateText: {
     color: '#999',
     fontSize: 12,
+    alignSelf: 'flex-start',
   },
   updateHeading: {
     color: '#fff',

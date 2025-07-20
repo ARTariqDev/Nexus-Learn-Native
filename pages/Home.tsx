@@ -25,7 +25,7 @@ interface Update {
   heading: string;
   text: string;
   date: string;
-  category: string;
+  category: string | string[];
 }
 
 export default function HomePage() {
@@ -37,6 +37,24 @@ export default function HomePage() {
   const [fontsLoaded] = useFonts({
     Monoton: require('../assets/fonts/Monoton-Regular.ttf'),
   });
+
+  // Helper function to get the primary category for display
+  const getPrimaryCategory = (category: string | string[] | undefined): string => {
+    if (!category) return '';
+    if (Array.isArray(category)) {
+      return category[0] || '';
+    }
+    return category;
+  };
+
+  // Helper function to check if category exists
+  const hasValidCategory = (category: string | string[] | undefined): boolean => {
+    if (!category) return false;
+    if (Array.isArray(category)) {
+      return category.length > 0 && category[0] !== undefined && category[0] !== '';
+    }
+    return category !== undefined && category !== '';
+  };
 
   useEffect(() => {
     const checkTokenAndFetchUser = async () => {
@@ -98,7 +116,12 @@ export default function HomePage() {
         
         // Sort updates by date (newest first) and take only the latest 1
         const sortedUpdates = updatesData.updates
-          .filter((update: Update) => update && update.date && update.heading && update.category) // Filter out invalid entries
+          .filter((update: Update) => 
+            update && 
+            update.date && 
+            update.heading && 
+            hasValidCategory(update.category)
+          ) // Filter out invalid entries
           .sort((a: Update, b: Update) => new Date(b.date).getTime() - new Date(a.date).getTime())
           .slice(0, 1);
           
@@ -126,10 +149,11 @@ export default function HomePage() {
     navigation.navigate('Contribute' as never);
   };
 
-  const getUpdateTypeColor = (category: string) => {
-    if (!category) return '#757575'; // Default color for undefined category
+  const getUpdateTypeColor = (category: string | string[] | undefined) => {
+    const primaryCategory = getPrimaryCategory(category);
+    if (!primaryCategory) return '#757575'; // Default color for undefined category
     
-    switch (category.toLowerCase()) {
+    switch (primaryCategory.toLowerCase()) {
       case 'feature':
         return '#4CAF50';
       case 'content':
@@ -138,15 +162,20 @@ export default function HomePage() {
         return '#FF9800';
       case 'announcement':
         return '#9C27B0';
+      case 'performance':
+        return '#2196F3';
+      case 'ui/ux':
+        return '#9C27B0';
       default:
         return '#757575';
     }
   };
 
-  const getUpdateTypeText = (category: string) => {
-    if (!category) return 'UPDATE'; // Default text for undefined category
+  const getUpdateTypeText = (category: string | string[] | undefined) => {
+    const primaryCategory = getPrimaryCategory(category);
+    if (!primaryCategory) return 'UPDATE'; // Default text for undefined category
     
-    switch (category.toLowerCase()) {
+    switch (primaryCategory.toLowerCase()) {
       case 'feature':
         return 'NEW';
       case 'content':
@@ -155,6 +184,10 @@ export default function HomePage() {
         return 'FIX';
       case 'announcement':
         return 'NEWS';
+      case 'performance':
+        return 'PERF';
+      case 'ui/ux':
+        return 'UI';
       default:
         return 'UPDATE';
     }
@@ -422,7 +455,8 @@ const styles = StyleSheet.create({
   },
   contributeCardText: {
     fontSize: 18,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: '#000',
   },
   lastSection: {
     marginBottom: 100,
