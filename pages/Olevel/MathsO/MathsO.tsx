@@ -167,7 +167,7 @@ export default function MathsOPage() {
         </View>
       </ScrollView>
 
-      {/* Footer */}
+
       <View style={styles.footerWrapper}>
         <Footer />
       </View>
