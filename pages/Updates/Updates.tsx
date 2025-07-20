@@ -32,7 +32,6 @@ export default function Updates() {
   });
 
   useEffect(() => {
-    // Simulate loading and sort updates by date (newest first)
     const sortedUpdates = updatesData.updates.sort((a, b) => 
       new Date(b.date).getTime() - new Date(a.date).getTime()
     );

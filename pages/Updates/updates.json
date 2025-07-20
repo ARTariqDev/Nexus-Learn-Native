@@ -13,6 +13,13 @@
       "text": "Fixed several issues including login persistence, resource loading errors, and navigation glitches. The app is now more stable and reliable across all devices. Also fixed issue with the bottom menu",
       "date": "2025-07-25",
       "category": "Bug Fix"
+    },
+    {
+      "id": 3,
+      "heading": "v1.0 is Out Now! FeedBack Section & More Resources Added!",
+      "text": "Added the FeedBack/Contribute Section! Use this to provide feedback or contribute Your input is resources aluable! Also fixed a lot of bugs and issues with the app, making it more stable and reliable.Also Added Resources for O Level Accounting And Maths",
+      "date": "2025-08-05",
+      "category": "Feature"
     }
   ]
 }
