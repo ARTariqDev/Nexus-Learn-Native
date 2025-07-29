@@ -236,13 +236,19 @@ export default function HomePage() {
                 updates.map((update) => (
                   <View key={update.id} style={styles.updateItem}>
                     <View style={styles.updateHeader}>
-                      <View style={[styles.updateBadge, { backgroundColor: getUpdateTypeColor(update.category) }]}>
-                        <Text style={styles.updateBadgeText}>{getUpdateTypeText(update.category)}</Text>
+                      <View style={{ flexDirection: 'row', gap: 6 }}>
+                        {(Array.isArray(update.category) ? update.category : [update.category]).map((tag, idx) => (
+                          <View key={idx} style={[styles.updateBadge, { backgroundColor: getUpdateTypeColor(tag) }]}>
+                            <Text style={styles.updateBadgeText}>{getUpdateTypeText(tag)}</Text>
+                          </View>
+                        ))}
                       </View>
                       <Text style={styles.updateDate}>{formatDate(update.date)}</Text>
                     </View>
                     <Text style={styles.updateTitle}>{update.heading}</Text>
-                    <Text style={styles.updateDescription}>{update.text}</Text>
+                    <Text style={styles.updateDescription}>
+                      {update.text.length > 100 ? `${update.text.slice(0, 100)}...` : update.text}
+                    </Text>
                   </View>
                 ))
               ) : (

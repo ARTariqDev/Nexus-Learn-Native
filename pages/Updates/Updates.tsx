@@ -19,7 +19,7 @@ interface Update {
   heading: string;
   text: string;
   date: string;
-  category: string | string[]; // Allow both single string and array
+  category: string | string[];
 }
 
 export default function Updates() {
@@ -32,9 +32,8 @@ export default function Updates() {
   });
 
   useEffect(() => {
-    const sortedUpdates = updatesData.updates.sort((a, b) => 
-      new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
+    const sortedUpdates = updatesData.updates.sort((a, b) => b.id - a.id);
+
     setUpdates(sortedUpdates);
     setLoading(false);
   }, []);

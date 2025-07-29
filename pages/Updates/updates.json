@@ -23,10 +23,10 @@
     },
     {
       "id" : 4,
-      "heading": "Added 2 years of Further Maths Past Papers!",
-      "text" : "Added May/June 2024 , 2023 May/June and 2023 October/November Past Papers for Further Maths A Level! Thanks to my newly made web-scraper, you can expect more frequent updates with new resources!",
+      "heading": "Added 3 years of Further Maths and O level Accounting (2022-2024) past papers! Fixed Stats Page too!",
+      "text" : "Added Past Papers for Further Maths A Level! Thanks to my newly made web-scraper, you can expect more frequent updates with new resources! Added O level Accounting Yearly Past papers as well. Thank God for that web scraper, it makes my life so much easier! Expect more updates soon! Added more Subjects to The Stats/Insights page as well",
       "date":"2025-07-29",
-      "category": ["Content", "Feature"]
+      "category": ["Content", "Feature","Bug Fix"]
     }
   ]
 }

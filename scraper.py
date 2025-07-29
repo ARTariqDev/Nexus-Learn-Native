@@ -15,9 +15,9 @@ import shutil
 load_dotenv()
 # ---------- Configuration ----------
 BASE_URL = "https://pastpapers.co"
-subject_path = "O-Level/Accounting-7707/2023-Oct-Nov"
-session_name = "November 2023"
-drive_parent_folder_id = "10ilpeRr0i_158DvEQkn9r1buRjtqh8Vu"
+subject_path = "A-Level/Mathematics-Further-9231/2022-May-June"
+session_name = "June 2022"
+drive_parent_folder_id = "1aTsUHI8WlM00zXq49HP3zgGCvkog-e9G"
 DOWNLOAD_DIR = "downloads"
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
 # -----------------------------------
