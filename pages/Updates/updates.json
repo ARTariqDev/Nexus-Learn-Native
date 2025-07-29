@@ -27,6 +27,13 @@
       "text" : "Added Past Papers for Further Maths A Level! Thanks to my newly made web-scraper, you can expect more frequent updates with new resources! Added O level Accounting Yearly Past papers as well. Thank God for that web scraper, it makes my life so much easier! Expect more updates soon! Added more Subjects to The Stats/Insights page as well",
       "date":"2025-07-29",
       "category": ["Content", "Feature","Bug Fix"]
+    },
+    {
+      "id": 5,
+      "heading": "Added every single A level CS past paper",
+      "text": "I wanna kms, but I did it! Every single A level CS past paper is now available on the app! Thanks to my web scraper, I was able to scrape every single past paper from 2021 to 2024. I hope you find these resources helpful! Also fixed some bugs with the Stats page and added more subjects to it.",
+      "date": "2025-07-29",
+      "category": ["Content"]
     }
   ]
 }
