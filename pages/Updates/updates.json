@@ -30,10 +30,10 @@
     },
     {
       "id": 5,
-      "heading": "Added every single A level CS past paper",
-      "text": "I wanna kms, but I did it! Every single A level CS past paper is now available on the app! Thanks to my web scraper, I was able to scrape every single past paper from 2021 to 2024. I hope you find these resources helpful! Also fixed some bugs with the Stats page and added more subjects to it.",
+      "heading": "Added every single A level CS Past Paper and FM Past Papers from 2020-2024",
+      "text": "I wanna kms",
       "date": "2025-07-29",
-      "category": ["Content"]
+      "category": ["Content", "Feature", "Bug Fix"]
     }
   ]
 }

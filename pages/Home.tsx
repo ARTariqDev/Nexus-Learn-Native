@@ -114,16 +114,17 @@ export default function HomePage() {
           return;
         }
         
-        // Sort updates by date (newest first) and take only the latest 1
+        // Sort updates by highest ID and take the latest one
         const sortedUpdates = updatesData.updates
           .filter((update: Update) => 
             update && 
-            update.date && 
-            update.heading && 
+            typeof update.id === 'number' &&
+            update.heading &&
             hasValidCategory(update.category)
-          ) // Filter out invalid entries
-          .sort((a: Update, b: Update) => new Date(b.date).getTime() - new Date(a.date).getTime())
+          )
+          .sort((a: Update, b: Update) => b.id - a.id)
           .slice(0, 1);
+
           
         setUpdates(sortedUpdates);
       } catch (error) {

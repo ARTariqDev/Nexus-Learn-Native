@@ -15,9 +15,9 @@ import shutil
 load_dotenv()
 # ---------- Configuration ----------
 BASE_URL = "https://pastpapers.co"
-subject_path = "A-Level/Computer%20Science%20%28for%20first%20examination%20in%202021%29%20%289618%29/2021-May-June"
-session_name = "June 2021"
-drive_parent_folder_id = "1RdQ4rHJn9mIvRPDARebtKcDniB7GTjfr"
+subject_path = "A-Level/Mathematics-Further-9231/2020-May-June"
+session_name = "June 2020"
+drive_parent_folder_id = "15U-YHl8GuEqTA4wfQ2rPFY9oZw4qPmEk"
 DOWNLOAD_DIR = "downloads"
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
 # -----------------------------------
