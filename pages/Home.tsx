@@ -104,17 +104,16 @@ export default function HomePage() {
 
     const fetchUpdates = async () => {
       try {
-        // Import the updates JSON file
         const updatesData = require('pages/Updates/updates.json');
         
-        // Validate that updates exist and is an array
+
         if (!updatesData || !updatesData.updates || !Array.isArray(updatesData.updates)) {
           console.warn('Invalid updates data structure');
           setUpdates([]);
           return;
         }
         
-        // Sort updates by highest ID and take the latest one
+
         const sortedUpdates = updatesData.updates
           .filter((update: Update) => 
             update && 

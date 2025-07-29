@@ -37,6 +37,7 @@ const StatsPage = () => {
   // add subjects here (im adding O at the end to indicate O level subjects)
   const subjects = [
     { label: 'Accounting (O Level)', value: 'AccO' },
+    { label: 'Maths (O Level)', value: 'MathsO' },
     { label: 'Accounting (A Level)', value: 'Acc' },
     { label: 'Further Maths (A Level)', value: 'FM' },
     { label: 'Computer Science (A Level)', value: 'CS' },
