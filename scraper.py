@@ -1,13 +1,17 @@
 import os
 import re
 import json
+import pickle
 import requests
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
-import pickle
+
+# Load env vars
+load_dotenv()
 
 # ---------- Configuration ----------
 BASE_URL = "https://pastpapers.co"
@@ -27,7 +31,16 @@ def get_drive_service():
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
+            flow = InstalledAppFlow.from_client_config({
+                "installed": {
+                    "client_id": os.getenv("GOOGLE_CLIENT_ID"),
+                    "client_secret": os.getenv("GOOGLE_CLIENT_SECRET"),
+                    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                    "token_uri": "https://oauth2.googleapis.com/token",
+                    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+                    "redirect_uris": [os.getenv("GOOGLE_REDIRECT_URI")]
+                }
+            }, SCOPES)
             creds = flow.run_local_server(port=0)
         with open('token.pickle', 'wb') as token:
             pickle.dump(creds, token)
@@ -47,7 +60,6 @@ def download_files():
         if not href or ".pdf" not in href:
             continue
 
-        # Convert view.php?id= to a proper file link
         if "view.php?id=" in href:
             raw_path = href.split("view.php?id=")[-1]
             full_link = f"{BASE_URL}/{raw_path}"
@@ -93,7 +105,6 @@ def upload_file(service, file_path, drive_folder_id):
     media = MediaFileUpload(file_path, mimetype='application/pdf')
     uploaded = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
 
-    # Make file public
     service.permissions().create(
         fileId=uploaded['id'],
         body={'type': 'anyone', 'role': 'reader'}
