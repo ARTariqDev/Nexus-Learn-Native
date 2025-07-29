@@ -12,12 +12,11 @@ from google.auth.transport.requests import Request
 
 # Load env vars
 load_dotenv()
-
 # ---------- Configuration ----------
 BASE_URL = "https://pastpapers.co"
-subject_path = "A-Level/Mathematics-Further-9231/2024-May-June"
-session_name = "June 2024"
-drive_parent_folder_id = "14XclMbQKaWFCF_1fEGBcZY7Nu6KJx7dK"
+subject_path = "A-Level/Mathematics-Further-9231/2023-May-June"
+session_name = "June 2023"
+drive_parent_folder_id = "1jDbw5OAnmtXS8oSsgqbAnaT2Mmr1UFoL"
 DOWNLOAD_DIR = "downloads"
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
 # -----------------------------------
