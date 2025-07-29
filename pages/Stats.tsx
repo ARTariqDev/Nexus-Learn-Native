@@ -34,18 +34,20 @@ interface DecodedToken {
 const StatsPage = () => {
   // Add level state
   const [level, setLevel] = useState<'O' | 'A'>('O');
-  // Only accounting subjects for now
+  // add subjects here (im adding O at the end to indicate O level subjects)
   const subjects = [
     { label: 'Accounting (O Level)', value: 'AccO' },
-    { label: 'Accounting (A Level)', value: 'AccA' },
+    { label: 'Accounting (A Level)', value: 'Acc' },
+    { label: 'Further Maths (A Level)', value: 'FM' },
+    { label: 'Computer Science (A Level)', value: 'CS' },
   ];
-  // Paper groups for O level
+  // Paper groups for O level (since they MAX go to 33)
   const oLevelPapers = [
     { label: 'P1 (11,12,13)', value: '1' },
     { label: 'P2 (21,22,23)', value: '2' },
     { label: 'P3 (31,32,33)', value: '3' },
   ];
-  // Paper groups for A level (example, adjust as needed)
+  // Paper groups for A level (since they MAX go to 63 but will be 43 for now)
   const aLevelPapers = [
     { label: 'Paper 1', value: '1' },
     { label: 'Paper 2', value: '2' },
@@ -254,7 +256,7 @@ const StatsPage = () => {
             onValueChange={setSubject}
             mode="dropdown"
             dropdownIconRippleColor="#ffaa00"
-            enabled={false} // Only one subject for now
+            enabled={true}
           >
             {subjects
               .filter(s => (level === 'O' ? s.value.endsWith('O') : !s.value.endsWith('O')))

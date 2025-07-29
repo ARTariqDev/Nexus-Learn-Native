@@ -123,7 +123,7 @@ export default function AccOPage() {
                      mode="dropdown"
                      dropdownIconRippleColor="#ffaa00"
                   >
-                    <Picker.Item label="May/June" value="may" />
+                    <Picker.Item label="May/June" value="june" />
                     <Picker.Item label="Oct/Nov" value="november" />
                     <Picker.Item label="Feb/Mar" value="march" />
                   </Picker>

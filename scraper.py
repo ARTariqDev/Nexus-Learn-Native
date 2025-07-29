@@ -9,14 +9,15 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
+import shutil
 
 # Load env vars
 load_dotenv()
 # ---------- Configuration ----------
 BASE_URL = "https://pastpapers.co"
-subject_path = "A-Level/Mathematics-Further-9231/2023-May-June"
-session_name = "June 2023"
-drive_parent_folder_id = "1jDbw5OAnmtXS8oSsgqbAnaT2Mmr1UFoL"
+subject_path = "O-Level/Accounting-7707/2023-Oct-Nov"
+session_name = "November 2023"
+drive_parent_folder_id = "10ilpeRr0i_158DvEQkn9r1buRjtqh8Vu"
 DOWNLOAD_DIR = "downloads"
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
 # -----------------------------------
@@ -157,3 +158,8 @@ if __name__ == "__main__":
         build_metadata(drive_service, paper_dict)
     else:
         print("⚠️ No papers found.")
+
+    # Cleanup
+    if os.path.exists(DOWNLOAD_DIR):
+        shutil.rmtree(DOWNLOAD_DIR)
+        print(f"🧹 Deleted temporary download directory: {DOWNLOAD_DIR}")

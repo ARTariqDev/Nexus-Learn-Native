@@ -20,6 +20,13 @@
       "text": "Added the FeedBack/Contribute Section! Use this to provide feedback or contribute Resources Your input is valuable! Also fixed a lot of bugs and issues with the app, making it more stable and reliable.Also Added Resources for O Level Accounting And Maths",
       "date": "2025-07-20",
       "category": ["Feature", "Content", "Bug Fix"]
+    },
+    {
+      "id" : 4,
+      "heading": "Added 2 years of Further Maths Past Papers!",
+      "text" : "Added May/June 2024 , 2023 May/June and 2023 October/November Past Papers for Further Maths A Level! Thanks to my newly made web-scraper, you can expect more frequent updates with new resources!",
+      "date":"2025-07-29",
+      "category": ["Content", "Feature"]
     }
   ]
 }

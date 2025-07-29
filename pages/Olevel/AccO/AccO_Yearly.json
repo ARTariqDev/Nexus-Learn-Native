@@ -34,5 +34,41 @@
     "text1": "View Question Paper",
     "text2": "View Mark Scheme",
     "id": "november_2024_23"
+  },
+  {
+    "name": "June 2024-11",
+    "size": "3",
+    "qp": "https://drive.google.com/file/d/11H2XQuDo7SJGrvnimSGSbhjgzhY5-w8Q/view?usp=sharing",
+    "ms": "https://drive.google.com/file/d/1psfv2GoE_TwswtIu_GeVGST5tgeH6NMh/view?usp=sharing",
+    "text1": "View Question Paper",
+    "text2": "View Mark Scheme",
+    "id": "june_2024_11"
+  },
+  {
+    "name": "June 2024-12",
+    "size": "3",
+    "qp": "https://drive.google.com/file/d/1YbGIPqZ6769YysDcr4pm2yvpMghGRA5S/view?usp=sharing",
+    "ms": "https://drive.google.com/file/d/1f0p1WsPLb7T4YyohDRDYc_NkOkesL4Dy/view?usp=sharing",
+    "text1": "View Question Paper",
+    "text2": "View Mark Scheme",
+    "id": "june_2024_12"
+  },
+  {
+    "name": "June 2024-21",
+    "size": "3",
+    "qp": "https://drive.google.com/file/d/1qFKQvs9OyUMSFjRlsBHglgRQPpl2pE2R/view?usp=sharing",
+    "ms": "https://drive.google.com/file/d/1lqZ_WX8EtKpdiTwNPSQagGxOIPOrj4Iv/view?usp=sharing",
+    "text1": "View Question Paper",
+    "text2": "View Mark Scheme",
+    "id": "june_2024_21"
+  },
+  {
+    "name": "June 2024-22",
+    "size": "3",
+    "qp": "https://drive.google.com/file/d/17mZs0EHTjWCdptwpQXiN4gFWUkkCAbjV/view?usp=sharing",
+    "ms": "https://drive.google.com/file/d/1HmKZsTJu1t4r9An2_xVCgHplmuG94dV-/view?usp=sharing",
+    "text1": "View Question Paper",
+    "text2": "View Mark Scheme",
+    "id": "june_2024_22"
   }
 ]
