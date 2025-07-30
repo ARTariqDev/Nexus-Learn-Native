@@ -16,9 +16,9 @@ load_dotenv()
 
 # ---------------------------- Configuration ----------------------------
 BASE_URL = "https://pastpapers.co"
-subject_path = "A-Level/Information-Technology-9626/2023-May-June"
-session_name = "June 2023"
-drive_parent_folder_id = "1JM4mzEPMddc13quXIV2etJAmfCfBk5J1"
+subject_path = "A-Level/Information-Technology-9626/2020%20March"
+session_name = "March 2020"
+drive_parent_folder_id = "1PJGbG-Mwm3q3RZiGY2u0FTTaIToSmhBz"
 DOWNLOAD_DIR = "downloads"
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
 # -----------------------------------------------------------------------

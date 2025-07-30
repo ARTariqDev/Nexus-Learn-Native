@@ -34,6 +34,13 @@
       "text": "I wanna kms",
       "date": "2025-07-29",
       "category": ["Content", "Feature"]
+    },
+    {
+      "id": 6,
+      "heading": "Added A level IT Past Papers from 2020-2025 March",
+      "text": "Added A level IT Past Papers from 2020-2025 March but I broke my scraper like 3 times in the process and had to rewrite the code each time.....never doing this again",
+      "date": "2025-07-30",
+      "category": ["Content"]
     }
   ]
 }

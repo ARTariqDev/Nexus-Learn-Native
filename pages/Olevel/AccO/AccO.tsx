@@ -125,7 +125,6 @@ export default function AccOPage() {
                   >
                     <Picker.Item label="May/June" value="june" />
                     <Picker.Item label="Oct/Nov" value="november" />
-                    <Picker.Item label="Feb/Mar" value="march" />
                   </Picker>
                 </View>
               </View>
