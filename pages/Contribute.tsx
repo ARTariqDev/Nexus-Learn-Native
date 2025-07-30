@@ -31,7 +31,7 @@ export default function Contribute() {
   const [loading, setLoading] = useState(false);
 
   const subjectOptions = [
-    { label: 'Select a subject...', value: '' },
+    { label: 'FeedBack Type..', value: '' },
     { label: 'Feedback/Bugs', value: 'feedback' },
     { label: 'Contribute Resources', value: 'contribute' },
   ];
@@ -161,14 +161,14 @@ export default function Contribute() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.title}>Contribute to AdmitAxis</Text>
+        <Text style={styles.title}>Contribute to Nexus Learn</Text>
         <Text style={styles.subtitle}>
           Help us improve by sharing feedback or contributing resources
         </Text>
 
         {/* A picker for Subject Selection */}
         <View style={styles.section}>
-          <Text style={styles.label}>Subject *</Text>
+          <Text style={styles.label}>Choose Feedback Type *</Text>
           <View style={styles.pickerContainer}>
             <Picker
               selectedValue={subject}

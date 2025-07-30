@@ -41,6 +41,13 @@
       "text": "Added A level IT Past Papers from 2020-2025 March but I broke my scraper like 3 times in the process and had to rewrite the code each time.....never doing this again",
       "date": "2025-07-30",
       "category": ["Content"]
+    },
+    {
+      "id": 7,
+      "heading": "Added A level Physics and A level Maths Past Papers from 2020-2025 March, made some UI changes to the stats and contribute pages added Support For Scraping from multiple sources as well from my scraper",
+      "text": "I wanna kms...again",
+      "date": "2025-07-30",
+      "category": ["Content","UI/UX","Bug Fix"]
     }
   ]
 }

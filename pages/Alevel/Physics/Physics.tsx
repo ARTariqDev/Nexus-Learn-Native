@@ -11,14 +11,21 @@ import {
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
+import { Picker } from '@react-native-picker/picker';
 import Header from 'components/Header';
 import Footer from 'components/BottomMenu';
 import PDF from 'components/PDF';
+import Yearly from 'components/Yearly';
+import physicsYearlyData from './Physics_Yearly.json';
 
 export default function Physics() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [showBooks, setShowBooks] = useState(false);
+  const [showPapers, setShowPapers] = useState(false);
+  const [year, setYear] = useState('2025');
+  const [session, setSession] = useState('march');
+  const [paperGroup, setPaperGroup] = useState('1');
   const navigation = useNavigation();
 
   const [fontsLoaded] = useFonts({
@@ -38,6 +45,15 @@ export default function Physics() {
     checkToken();
   }, []);
 
+  // Extract all years from the data and sort them in descending order
+  const allYears = [...new Set(physicsYearlyData.map((item) => item.id.split('_')[1]))].sort().reverse();
+  
+  // Filter data based on selected year, session, and paper group
+  const filtered = physicsYearlyData.filter((item) => {
+    const [sess, yr, code] = item.id.split('_');
+    return sess === session.toLowerCase() && yr === year && code.startsWith(paperGroup);
+  });
+
   if (!fontsLoaded || loading) {
     return (
       <View style={styles.loadingScreen}>
@@ -52,11 +68,11 @@ export default function Physics() {
       <Header />
 
       <Text style={[styles.pageTitle, { fontFamily: 'Monoton' }]}>
-                                        A Level Physics 9702
+        A Level Physics 9702
       </Text>
       
-
       <ScrollView contentContainerStyle={styles.container}>
+        {/* Books Section */}
         <View style={styles.section}>
           <View style={styles.headerRow}>
             <Text style={styles.sectionTitle}>Books</Text>
@@ -83,6 +99,81 @@ export default function Physics() {
                 size={2}
               />
             </View>
+          )}
+        </View>
+
+        {/* Physics Past Papers Section */}
+        <View style={styles.section}>
+          <View style={styles.headerRow}>
+            <Text style={[styles.sectionTitle, { fontFamily: 'Monoton' }]}>Yearly Past Papers</Text>
+            <TouchableOpacity onPress={() => setShowPapers(!showPapers)} style={styles.toggleButton}>
+              <Text style={styles.toggleText}>{showPapers ? 'Hide' : 'Show'}</Text>
+            </TouchableOpacity>
+          </View>
+          {showPapers && (
+            <>
+              <View style={styles.selectorRow}>
+                <Text style={styles.selectorLabel}>Year:</Text>
+                <View style={styles.pickerWrapper}>
+                  <Picker
+                    selectedValue={year}
+                    onValueChange={(itemValue) => setYear(itemValue)}
+                    style={styles.picker}
+                    mode="dropdown"
+                    dropdownIconRippleColor="#ffaa00"
+                  >
+                    {allYears.map((y) => (
+                      <Picker.Item key={y} label={y} value={y} />
+                    ))}
+                  </Picker>
+                </View>
+              </View>
+              <View style={styles.selectorRow}>
+                <Text style={styles.selectorLabel}>Session:</Text>
+                <View style={styles.pickerWrapper}>
+                  <Picker
+                    selectedValue={session}
+                    onValueChange={(itemValue) => setSession(itemValue)}
+                    style={styles.picker}
+                    mode="dropdown"
+                    dropdownIconRippleColor="#ffaa00"
+                  >
+                    <Picker.Item label="Feb/March" value="march" />
+                    <Picker.Item label="May/June" value="june" />
+                    <Picker.Item label="Oct/Nov" value="november" />
+                  </Picker>
+                </View>
+              </View>
+              <View style={styles.selectorRow}>
+                <Text style={styles.selectorLabel}>Paper:</Text>
+                <View style={styles.pickerWrapper}>
+                  <Picker
+                    selectedValue={paperGroup}
+                    onValueChange={(itemValue) => setPaperGroup(itemValue)}
+                    style={styles.picker}
+                    mode="dropdown"
+                    dropdownIconRippleColor="#ffaa00"
+                  >
+                    <Picker.Item label="P1 (11,12,13)" value="1" />
+                    <Picker.Item label="P2 (21,22,23)" value="2" />
+                    <Picker.Item label="P3 (31-36)" value="3" />
+                    <Picker.Item label="P4 (41,42,43)" value="4" />
+                    <Picker.Item label="P5 (51,52,53)" value="5" />
+                  </Picker>
+                </View>
+              </View>
+              <View style={styles.cardColumn}>
+                {filtered.length > 0 ? (
+                  filtered.map((item, index) => (
+                    <View key={index} style={{marginLeft: -36, width: "110%"}}>
+                      <Yearly {...item} subject="Physics" />
+                    </View>
+                  ))
+                ) : (
+                  <Text style={styles.noResultsText}>No papers found for this selection.</Text>
+                )}
+              </View>
+            </>
           )}
         </View>
       </ScrollView>
@@ -118,13 +209,13 @@ const styles = StyleSheet.create({
   },
   container: {
     padding: 16,
-    paddingBottom: 80, 
+    paddingBottom: 160,
   },
   section: {
     backgroundColor: '#111',
     borderRadius: 12,
     padding: 16,
-    marginBottom: 16,
+    marginBottom: 24,
   },
   headerRow: {
     flexDirection: 'row',
@@ -137,13 +228,13 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 24,
     fontFamily: 'Monoton',
+    flex: 1,
   },
   toggleButton: {
     backgroundColor: '#ffaa00',
-    paddingHorizontal: 16,
+    paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 6,
-    marginTop: 8,
   },
   toggleText: {
     color: '#000',
@@ -154,5 +245,35 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     gap: 12,
+  },
+  cardColumn: {
+    flexDirection: 'column',
+    marginLeft: 45,
+    gap: 16,
+  },
+  selectorRow: {
+    marginBottom: 12,
+  },
+  selectorLabel: {
+    color: '#aaa',
+    marginBottom: 4,
+    fontSize: 14,
+  },
+  pickerWrapper: {
+    backgroundColor: '#1a1a1a',
+    borderColor: '#444',
+    borderWidth: 1,
+    borderRadius: 6,
+    paddingHorizontal: 8,
+  },
+  picker: {
+    color: '#fff',
+    height: 55,
+    width: '100%',
+  },
+  noResultsText: {
+    color: '#888',
+    textAlign: 'center',
+    marginTop: 20,
   },
 });

@@ -10,15 +10,26 @@ from googleapiclient.http import MediaFileUpload
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 import shutil
+from urllib.parse import urlparse, urljoin, unquote
 
 # Load env vars
 load_dotenv()
 
 # ---------------------------- Configuration ----------------------------
-BASE_URL = "https://pastpapers.co"
-subject_path = "A-Level/Information-Technology-9626/2020%20March"
+# Choose source: "pastpapers" or "papacambridge"
+SOURCE = "pastpapers"  # or "pastpapers"
+
+# For pastpapers.co aka the GOAT
+PASTPAPERS_BASE_URL = "https://pastpapers.co"
+pastpapers_subject_path = "A-Level/Mathematics-9709/2020%20March"
+
+# For bum ass PapaCambridge....I hate it never works ....but I have to keep it as a backup in case pastpapers.co doesnt work ,-_-,
+PAPACAMBRIDGE_BASE_URL = "https://pastpapers.papacambridge.com"
+
+papacambridge_subject_path = "A-Level/Mathematics-9709/2020-Oct-Nov"
+
 session_name = "March 2020"
-drive_parent_folder_id = "1PJGbG-Mwm3q3RZiGY2u0FTTaIToSmhBz"
+drive_parent_folder_id = "1WsACt_7cPq5-zE2z3o62osp4YoUIM6N5"
 DOWNLOAD_DIR = "downloads"
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
 # -----------------------------------------------------------------------
@@ -46,12 +57,13 @@ def get_drive_service():
         with open('token.pickle', 'wb') as token:
             pickle.dump(creds, token)
     service = build('drive', 'v3', credentials=creds, cache_discovery=False)
-    service._http.timeout = 300  # Set longer timeout for large file uploads
+    service._http.timeout = 300  # Set longer timeout for large file uploads, not repeating that time my entire upload failed because of timeout
     return service
 
-def download_files():
-    full_url = f"{BASE_URL}/cie/?dir={subject_path}"
-    print(f"🔍 Scraping: {full_url}")
+def scrape_pastpapers_co():
+    """Scrape papers from pastpapers.co"""
+    full_url = f"{PASTPAPERS_BASE_URL}/cie/?dir={pastpapers_subject_path}"
+    print(f"🔍 Scraping pastpapers.co: {full_url}")
     res = requests.get(full_url)
     soup = BeautifulSoup(res.text, 'html.parser')
 
@@ -70,11 +82,11 @@ def download_files():
             continue
 
         if href.startswith("/"):
-            full_link = f"{BASE_URL}{href}"
+            full_link = f"{PASTPAPERS_BASE_URL}{href}"
         elif href.startswith("http"):
             full_link = href
         else:
-            full_link = f"{BASE_URL}/cie/{href}"
+            full_link = f"{PASTPAPERS_BASE_URL}/cie/{href}"
 
         filename = os.path.basename(href)
         print(f"📄 Processing: {filename}")
@@ -96,8 +108,80 @@ def download_files():
             paper_dict.setdefault(variant, {})["sf"] = full_link
             print(f"  ✅ Found SF for variant {variant}")
 
-    print(f"\n📊 Found papers for variants: {list(paper_dict.keys())}")
+    return paper_dict
+
+def scrape_papacambridge():
+    """Scrape papers from PapaCambridge papers page"""
+    full_url = f"{PAPACAMBRIDGE_BASE_URL}/{papacambridge_subject_path}"
+    print(f"🔍 Scraping PapaCambridge papers page: {full_url}")
     
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+    
+    res = requests.get(full_url, headers=headers)
+    soup = BeautifulSoup(res.text, 'html.parser')
+
+    # Look for download links on the papers page
+    links = soup.select("a[href*='download_file.php']")
+    paper_dict = {}
+
+    print(f"📊 Found {len(links)} download links on the page")
+
+    for link in links:
+        href = link.get("href")
+        if not href:
+            continue
+
+        # Extract the actual PDF URL from the files parameter
+        if "files=" in href:
+            files_param = href.split("files=")[-1]
+            actual_pdf_url = unquote(files_param)
+            filename = os.path.basename(actual_pdf_url)
+        else:
+            continue
+
+        print(f"📄 Processing: {filename}")
+
+        # Build the full download URL
+        if href.startswith("http"):
+            full_link = href
+        else:
+            full_link = urljoin(PAPACAMBRIDGE_BASE_URL, href)
+
+        # ONLY match QP, MS, and SF patterns - exclude GT, ER, CI
+        qp_match = re.search(r"(\d{4})_[wsm]\d{2}_qp_(\d{1,2})\.pdf", filename, re.IGNORECASE)
+        ms_match = re.search(r"(\d{4})_[wsm]\d{2}_ms_(\d{1,2})\.pdf", filename, re.IGNORECASE)
+        sf_match = re.search(r"(\d{4})_[wsm]\d{2}_sf_(\d{1,2})\.(zip|pdf)", filename, re.IGNORECASE)
+
+        if qp_match:
+            variant = qp_match.group(2).zfill(2)
+            paper_dict.setdefault(variant, {})["qp"] = full_link
+            print(f"  ✅ Found QP for variant {variant}")
+        elif ms_match:
+            variant = ms_match.group(2).zfill(2)
+            paper_dict.setdefault(variant, {})["ms"] = full_link
+            print(f"  ✅ Found MS for variant {variant}")
+        elif sf_match:
+            variant = sf_match.group(2).zfill(2)
+            paper_dict.setdefault(variant, {})["sf"] = full_link
+            print(f"  ✅ Found SF for variant {variant}")
+        else:
+            # Skip GT, ER, CI files silently
+            if not any(x in filename.lower() for x in ['_gt.', '_er_', '_ci_']):
+                print(f"  ⚠️ Unrecognized file pattern: {filename}")
+
+    return paper_dict
+
+def download_files():
+    """Download files based on selected source"""
+    if SOURCE == "papacambridge":
+        paper_dict = scrape_papacambridge()
+    else:
+        paper_dict = scrape_pastpapers_co()
+
+    print(f"\n📊 Found papers for variants: {list(paper_dict.keys())}")
+
     os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
     for variant, files in paper_dict.items():
@@ -110,22 +194,31 @@ def download_files():
                 path = os.path.join(folder, f"{type_}{variant}.pdf")
                 try:
                     print(f"⬇️ Downloading: {url}")
-                    response = requests.get(url)
+                    headers = {
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+                    }
+                    response = requests.get(url, headers=headers)
                     response.raise_for_status()
                     with open(path, 'wb') as f:
                         f.write(response.content)
+                    print(f"  ✅ Downloaded {type_.upper()} for variant {variant}")
                 except Exception as e:
                     print(f"❌ Error downloading {url}: {e}")
 
         if 'sf' in files:
             url = files['sf']
-            path = os.path.join(folder, f"sf{variant}.zip")
+            extension = '.zip' if url.lower().endswith('.zip') else '.pdf'
+            path = os.path.join(folder, f"sf{variant}{extension}")
             try:
                 print(f"⬇️ Downloading SF: {url}")
-                response = requests.get(url)
+                headers = {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+                }
+                response = requests.get(url, headers=headers)
                 response.raise_for_status()
                 with open(path, 'wb') as f:
                     f.write(response.content)
+                print(f"  ✅ Downloaded SF for variant {variant}")
             except Exception as e:
                 print(f"❌ Error downloading SF {url}: {e}")
 
@@ -144,7 +237,7 @@ def upload_file(service, file_path, drive_folder_id, mime_type=None):
         'name': os.path.basename(file_path),
         'parents': [drive_folder_id]
     }
-    media = MediaFileUpload(file_path, mimetype=mime_type, resumable=True)  # ← updated
+    media = MediaFileUpload(file_path, mimetype=mime_type, resumable=True)
     uploaded = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
 
     service.permissions().create(
@@ -166,6 +259,10 @@ def create_drive_folder(service, name, parent_id):
 def build_metadata(service, paper_dict):
     metadata = []
     for variant in sorted(paper_dict.keys()):
+        # Skip non-numeric variants (like 'gt')
+        if not variant.isdigit():
+            continue
+            
         folder_name = f"Paper{variant}"
         folder_path = os.path.join(DOWNLOAD_DIR, folder_name)
         if not os.path.exists(folder_path):
@@ -174,7 +271,11 @@ def build_metadata(service, paper_dict):
         drive_subfolder_id = create_drive_folder(service, folder_name, drive_parent_folder_id)
         qp_path = os.path.join(folder_path, f"qp{variant}.pdf")
         ms_path = os.path.join(folder_path, f"ms{variant}.pdf")
-        sf_path = os.path.join(folder_path, f"sf{variant}.zip")
+        
+        # Handle both .zip and .pdf SF files
+        sf_path_zip = os.path.join(folder_path, f"sf{variant}.zip")
+        sf_path_pdf = os.path.join(folder_path, f"sf{variant}.pdf")
+        sf_path = sf_path_zip if os.path.exists(sf_path_zip) else sf_path_pdf
 
         print(f"📤 Uploading Paper {variant}...")
 
@@ -196,27 +297,30 @@ def build_metadata(service, paper_dict):
             sf_link = upload_file(service, sf_path, drive_subfolder_id)
             print(f"  ✅ Uploaded SF")
         else:
-            print(f"  ⚠️ SF not found: {sf_path}")
+            print(f"  ⚠️ SF not found: {sf_path_zip} or {sf_path_pdf}")
 
-        is_paper_3_or_4 = int(variant) >= 30
+        # Format according to the specified structure
         metadata.append({
             "name": f"{session_name}-{variant}",
             "size": "3",
             "qp": qp_link,
             "ms": ms_link,
             "sf": sf_link,
-            "text1": "QP" if is_paper_3_or_4 else "View Question Paper",
-            "text2": "MS" if is_paper_3_or_4 else "View Mark Scheme",
+            "text1": "QP",
+            "text2": "MS",
             "text3": "SF" if sf_link else "",
             "id": f"{session_name.lower().replace(' ', '_')}_{variant}"
         })
 
-    with open("metadata.json", "w") as f:
+    output_filename = f"metadata_{SOURCE}.json"
+    with open(output_filename, "w") as f:
         json.dump(metadata, f, indent=2)
-    print("✅ JSON saved as metadata.json")
+    print(f"✅ JSON saved as {output_filename}")
     return metadata
 
 if __name__ == "__main__":
+    print(f"🚀 Starting scraper for source: {SOURCE}")
+    
     paper_dict = download_files()
     if paper_dict:
         print(f"\n📋 Summary of found files:")

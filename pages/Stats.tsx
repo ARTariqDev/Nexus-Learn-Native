@@ -17,8 +17,6 @@ import { LineChart } from 'react-native-gifted-charts';
 
 const screenWidth = Dimensions.get('window').width;
 
-
-// Types
 interface Score {
   subject: string;
   paper: string;
@@ -32,28 +30,29 @@ interface DecodedToken {
 }
 
 const StatsPage = () => {
-  // Add level state
   const [level, setLevel] = useState<'O' | 'A'>('O');
-  // add subjects here (im adding O at the end to indicate O level subjects)
   const subjects = [
     { label: 'Accounting (O Level)', value: 'AccO' },
     { label: 'Maths (O Level)', value: 'MathsO' },
     { label: 'Accounting (A Level)', value: 'Acc' },
     { label: 'Further Maths (A Level)', value: 'FM' },
     { label: 'Computer Science (A Level)', value: 'CS' },
+    { label: 'Information Technology (A Level)', value: 'IT' },
+    { label: 'Physics (A Level)', value: 'Physics' },
+    {label: 'Mathematics (A Level)', value: 'Maths'},
   ];
-  // Paper groups for O level (since they MAX go to 33)
   const oLevelPapers = [
     { label: 'P1 (11,12,13)', value: '1' },
     { label: 'P2 (21,22,23)', value: '2' },
     { label: 'P3 (31,32,33)', value: '3' },
   ];
-  // Paper groups for A level (since they MAX go to 63 but will be 43 for now)
   const aLevelPapers = [
     { label: 'Paper 1', value: '1' },
     { label: 'Paper 2', value: '2' },
     { label: 'Paper 3', value: '3' },
     { label: 'Paper 4', value: '4' },
+    { label: 'Paper 5', value: '5' },
+    { label: 'Paper 6', value: '6' },
   ];
 
   const [username, setUsername] = useState<string | null>(null);
@@ -67,13 +66,13 @@ const StatsPage = () => {
   const [fontsLoaded] = useFonts({
     Monoton: require('../assets/fonts/Monoton-Regular.ttf'),
   });
-  // Update subject and paper when level changes
+
   useEffect(() => {
     if (level === 'O') {
       setSubject('AccO');
       setPaperFilter('1');
     } else {
-      setSubject('AccA');
+      setSubject('Acc');
       setPaperFilter('1');
     }
   }, [level]);
@@ -113,11 +112,9 @@ const StatsPage = () => {
     };
   }, []);
 
-  // Separate effect to handle filter changes and show data loading
   useEffect(() => {
     if (!loading && scores.length > 0) {
       setDataLoading(true);
-      // Small delay to show loading state when filters change
       const timer = setTimeout(() => {
         setDataLoading(false);
       }, 300);
@@ -137,6 +134,32 @@ const StatsPage = () => {
     }
   };
 
+  // Function to get available papers based on level and subject
+  const getAvailablePapers = () => {
+    if (level === 'O') {
+      return oLevelPapers;
+    } else {
+      // For A Level, check if subject is Maths or Physics to show papers 5,6
+      const isMathsOrPhysics = subject === 'FM' || subject === 'Physics';
+      
+      if (isMathsOrPhysics) {
+        return aLevelPapers; // Show all papers including 5,6
+      } else {
+        return aLevelPapers.filter(paper => !['5', '6'].includes(paper.value)); // Exclude papers 5,6
+      }
+    }
+  };
+
+  // Reset paper filter if current selection is not available for new subject
+  useEffect(() => {
+    const availablePapers = getAvailablePapers();
+    const currentPaperAvailable = availablePapers.some(paper => paper.value === paperFilter);
+    
+    if (!currentPaperAvailable) {
+      setPaperFilter('1'); // Reset to Paper 1 if current selection is not available
+    }
+  }, [subject, level]);
+
   const timeThreshold = getTimeThreshold();
   const filtered = scores
     .filter(s => {
@@ -151,7 +174,7 @@ const StatsPage = () => {
     .sort((a, b) => new Date(a.date) - new Date(b.date));
 
   const formatPaperLabel = (paper: string) => {
-    const parts = paper?.split('_'); // ['november', '2024', '12']
+    const parts = paper?.split('_');
     if (parts.length !== 3) return paper;
 
     const [month, year, variant] = parts;
@@ -200,7 +223,7 @@ const StatsPage = () => {
               dataPointText: `${s.score}`,
             }))}
             width={Math.max(filtered.length * 100, screenWidth)}
-            height={300} // Add explicit height
+            height={300}
             thickness={2.5}
             color="#ffaa00"
             hideDataPoints={false}
@@ -235,8 +258,8 @@ const StatsPage = () => {
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.title}>Performance Stats</Text>
 
-        {/* Level Picker */}
-        <View style={styles.pickerRow}>
+        <View style={styles.pickerGroup}>
+          <Text style={styles.pickerLabel}>Choose Level</Text>
           <Picker
             selectedValue={level}
             style={styles.picker}
@@ -249,15 +272,14 @@ const StatsPage = () => {
           </Picker>
         </View>
 
-        {/* Subject and Paper Picker */}
-        <View style={styles.pickerRow}>
+        <View style={styles.pickerGroup}>
+          <Text style={styles.pickerLabel}>Choose Subject</Text>
           <Picker
             selectedValue={subject}
             style={styles.picker}
             onValueChange={setSubject}
             mode="dropdown"
             dropdownIconRippleColor="#ffaa00"
-            enabled={true}
           >
             {subjects
               .filter(s => (level === 'O' ? s.value.endsWith('O') : !s.value.endsWith('O')))
@@ -265,6 +287,10 @@ const StatsPage = () => {
                 <Picker.Item key={s.value} label={s.label} value={s.value} />
               ))}
           </Picker>
+        </View>
+
+        <View style={styles.pickerGroup}>
+          <Text style={styles.pickerLabel}>Choose Paper Variant</Text>
           <Picker
             selectedValue={paperFilter}
             style={styles.picker}
@@ -272,10 +298,14 @@ const StatsPage = () => {
             mode="dropdown"
             dropdownIconRippleColor="#ffaa00"
           >
-            {(level === 'O' ? oLevelPapers : aLevelPapers).map(p => (
+            {getAvailablePapers().map(p => (
               <Picker.Item key={p.value} label={p.label} value={p.value} />
             ))}
           </Picker>
+        </View>
+
+        <View style={styles.pickerGroup}>
+          <Text style={styles.pickerLabel}>Choose Timeframe</Text>
           <Picker
             selectedValue={timeRange}
             style={styles.picker}
@@ -306,7 +336,7 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 20,
-    paddingBottom: 120, // Extra space for chart and footer
+    paddingBottom: 120,
   },
   title: {
     color: '#ffaa00',
@@ -317,21 +347,25 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 1.2,
   },
-  pickerRow: {
-    marginBottom: 24,
-    gap: 12,
+  pickerGroup: {
+    marginBottom: 20,
+  },
+  pickerLabel: {
+    color: '#ffaa00',
+    fontSize: 16,
+    marginBottom: 6,
+    marginLeft: 4,
   },
   picker: {
     backgroundColor: '#1a1a1a',
     color: '#fff',
-    marginVertical: 4,
     borderRadius: 8,
   },
   chartWrapper: {
     borderRadius: 16,
     backgroundColor: '#111',
     padding: 12,
-    marginBottom: 20, // Add margin bottom
+    marginBottom: 20,
     shadowColor: '#ffaa00',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,

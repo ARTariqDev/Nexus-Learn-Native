@@ -138,9 +138,9 @@ export default function ITPage() {
                     dropdownIconRippleColor="#ffaa00"
                   >
                     <Picker.Item label="P1 (11,12,13)" value="1" />
-                    <Picker.Item label="P2 (21,22,23)" value="2" />
+                    <Picker.Item label="P2 (02)" value="2" />
                     <Picker.Item label="P3 (31,32,33)" value="3" />
-                    <Picker.Item label="P4 (41,42,43)" value="4" />
+                    <Picker.Item label="P4 (04)" value="4" />
                   </Picker>
                 </View>
               </View>
