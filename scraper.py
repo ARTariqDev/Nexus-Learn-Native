@@ -33,8 +33,12 @@ drive_parent_folder_id = "1VqzI__D7sAWVKfNjW2Zmo27vqGPp5MDt"
 DOWNLOAD_DIR = "downloads"
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
 
+"""
+sidenote: I HAD to use AI for scraping logic cause I couldn't figure this out  T-T
+(I mean even if I didnt add this comment u could figure it out from the emojis lol
+but the emojis were genuinely useful(?) cause they helped me a lot when my scraper (inevitably messes up T-T)
+"""
 
-#sidenote: I HAD to use AI for scraping logic cause I couldn't figure out ts T-T
 
 def get_drive_service():
     creds = None
