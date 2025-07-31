@@ -38,7 +38,7 @@ export default function HomePage() {
     Monoton: require('../assets/fonts/Monoton-Regular.ttf'),
   });
 
-  // Helper function to get the primary category for display
+
   const getPrimaryCategory = (category: string | string[] | undefined): string => {
     if (!category) return '';
     if (Array.isArray(category)) {
@@ -47,7 +47,7 @@ export default function HomePage() {
     return category;
   };
 
-  // Helper function to check if category exists
+
   const hasValidCategory = (category: string | string[] | undefined): boolean => {
     if (!category) return false;
     if (Array.isArray(category)) {
@@ -70,7 +70,7 @@ export default function HomePage() {
         try {
           const res = await fetch(`https://nexuslearn-mu.vercel.app/api/user?username=${decoded.username}`);
           
-          // Check if response is ok and content type is JSON
+
           if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);
           }
@@ -90,12 +90,12 @@ export default function HomePage() {
           }
         } catch (fetchErr) {
           console.error('Error fetching user:', fetchErr);
-          // Fallback to decoded username
+
           setUser({ username: decoded.username });
         }
       } catch (err) {
         console.error('Error decoding token:', err);
-        // If token is invalid, redirect to login
+
         navigation.navigate('Login' as never);
       } finally {
         setLoading(false);
@@ -177,7 +177,7 @@ export default function HomePage() {
 
   const getUpdateTypeText = (category: string | string[] | undefined) => {
     const primaryCategory = getPrimaryCategory(category);
-    if (!primaryCategory) return 'UPDATE'; // Default text for undefined category
+    if (!primaryCategory) return 'UPDATE';
     
     switch (primaryCategory.toLowerCase()) {
       case 'feature':

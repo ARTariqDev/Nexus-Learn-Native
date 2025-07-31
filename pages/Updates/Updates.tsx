@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
   },
   scrollContent: {
-    paddingBottom: 100, // Add padding to prevent bottom menu overlap
+    paddingBottom: 100,
   },
   headerSection: {
     paddingHorizontal: 20,
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     borderLeftColor: '#ffaa00',
   },
   lastUpdateCard: {
-    marginBottom: 0, // Remove bottom margin from last card since we have scroll padding
+    marginBottom: 0,
   },
   updateHeader: {
     marginBottom: 12,

@@ -28,7 +28,8 @@ import Guide from 'pages/Guides/Guide';
 import GuidesPage from 'pages/Guides/GuidesPage';
 import CSOPage from 'pages/Olevel/CSO/CSO';
 import CSIGCSEPage from 'pages/IGCSE/CSO/CSIGCSE';
-import IslamiyatOPage from 'pages/Olevel/Islamiyat/IslamiaytO';
+import IslamiyatOPage from 'pages/Olevel/IslamiyatO/IslamiaytO';
+import IslamiyatIGCSEPage from 'pages/IGCSE/IslamiyatO/IslamiaytIGCSE';
 
 
 const Stack = createNativeStackNavigator();
@@ -79,6 +80,7 @@ export default function App() {
         <Stack.Screen name="CSO" component={CSOPage} options={{ headerShown: false }} />
         <Stack.Screen name="CSIGCSE" component={CSIGCSEPage} options={{ headerShown: false }} />
         <Stack.Screen name="IslamiyatO" component={IslamiyatOPage} options={{ headerShown: false }} />
+        <Stack.Screen name="IslamiyatIGCSE" component={IslamiyatIGCSEPage} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

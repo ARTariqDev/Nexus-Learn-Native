@@ -51,10 +51,8 @@ export default function IGCSEPage() {
         <View style={styles.section}>
           <Text style={styles.title}>IGCSE</Text>
           <View style={styles.grid}>
-            <ResourcesCard title="ICT 0417" route="ICT" />
-            <ResourcesCard title="Maths 0580" route="MathsIGCSE" />
+            <ResourcesCard title="Islamiyat 0493" route="IslamiyatIGCSE" />
             <ResourcesCard title="Computer Science 0478" route="CSIGCSE" />
-            <ResourcesCard title="Add Maths 0606" route="AMIGCSE" />
           </View>
         </View>
       </ScrollView>

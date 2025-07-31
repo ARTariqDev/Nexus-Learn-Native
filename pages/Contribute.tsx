@@ -211,7 +211,7 @@ export default function Contribute() {
           </View>
         )}
 
-        {/* File Attachments (only for contribute based these on state) */}
+
         {subject === 'contribute' && (
           <View style={styles.section}>
             <Text style={styles.label}>Attachments</Text>

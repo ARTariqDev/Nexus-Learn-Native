@@ -25,7 +25,7 @@ export default function LandingPage() {
     Monoton: require('../assets/fonts/Monoton-Regular.ttf'),
   });
 
-  // Redirect if token is already present
+
   useEffect(() => {
     const checkToken = async () => {
       const token = await SecureStore.getItemAsync('token');
@@ -36,7 +36,7 @@ export default function LandingPage() {
     checkToken();
   }, []);
 
-  // Run fade-in animation
+
   useEffect(() => {
     Animated.timing(fadeAnim, {
       toValue: 1,
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    gap: 16, // React Native 0.71+ supports gap. If not, use marginRight manually
+    gap: 16,
   },
   loginButton: {
     backgroundColor: '#ffaa00',

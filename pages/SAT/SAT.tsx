@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   scrollContent: {
-    paddingBottom: 100, // Add padding to account for bottom navigation
+    paddingBottom: 100,
   },
   loadingScreen: {
     flex: 1,

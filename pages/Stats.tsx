@@ -45,7 +45,8 @@ const StatsPage = () => {
     { label: 'Maths (IGCSE)', value: 'MathsIGCSE' },
     { label: 'Computer Science (IGCSE)', value: 'CSIGCSE' },
     { label: 'Physics (IGCSE)', value: 'PhysicsIGCSE' },
-    {label: 'Islamiyat (Olevel/IGCSE)' , value: 'IslamiyatO'}
+    { label: 'Islamiyat (Olevel/IGCSE)' , value: 'IslamiyatO' },
+    { label: 'Islamiyat (Olevel/IGCSE)' , value: 'IslamiyatIGCSE' }
   ];
   const oLevelPapers = [
     { label: 'P1 (11,12,13)', value: '1' },
@@ -149,7 +150,7 @@ const StatsPage = () => {
     }
   };
 
-  // Function to get available papers based on level and subject
+
   const getAvailablePapers = () => {
     if (level === 'O') {
       return oLevelPapers;
@@ -167,13 +168,13 @@ const StatsPage = () => {
     }
   };
 
-  // Reset paper filter if current selection is not available for new subject
+
   useEffect(() => {
     const availablePapers = getAvailablePapers();
     const currentPaperAvailable = availablePapers.some(paper => paper.value === paperFilter);
     
     if (!currentPaperAvailable) {
-      setPaperFilter('1'); // Reset to Paper 1 if current selection is not available
+      setPaperFilter('1'); 
     }
   }, [subject, level]);
 

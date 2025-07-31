@@ -32,9 +32,9 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (res.ok && data.token) {
-        // Save the token securely
+
         await SecureStore.setItemAsync('token', data.token);
-        // Navigate to Home
+
         navigation.reset({
           index: 0,
           routes: [{ name: 'Home' }],
