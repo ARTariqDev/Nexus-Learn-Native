@@ -34,6 +34,8 @@ DOWNLOAD_DIR = "downloads"
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
 
 
+#sidenote: I HAD to use AI for scraping logic cause I couldn't figure out ts T-T
+
 def get_drive_service():
     creds = None
     if os.path.exists('token.pickle'):
@@ -57,7 +59,7 @@ def get_drive_service():
         with open('token.pickle', 'wb') as token:
             pickle.dump(creds, token)
     service = build('drive', 'v3', credentials=creds, cache_discovery=False)
-    service._http.timeout = 300  # Set longer timeout for large file uploads, not repeating that time my entire upload failed because of timeout
+    service._http.timeout = 300  # Set longer timeout for large file uploads cause I'm not repeating that time my entire upload failed because of timeout
     return service
 
 def scrape_pastpapers_co():
