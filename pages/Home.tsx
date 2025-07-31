@@ -149,6 +149,10 @@ export default function HomePage() {
     navigation.navigate('Contribute' as never);
   };
 
+  const handleViewGuides = () => {
+    navigation.navigate('GuidesPage' as never);
+  };
+
   const getUpdateTypeColor = (category: string | string[] | undefined) => {
     const primaryCategory = getPrimaryCategory(category);
     if (!primaryCategory) return '#757575'; // Default color for undefined category
@@ -222,6 +226,25 @@ export default function HomePage() {
           </Text>
           <Text style={styles.subText}>Explore resources and track your progress</Text>
           
+          {/* Guides Section */}
+          <View style={styles.guidesContainer}>
+            <View style={styles.guidesHeader}>
+              <Text style={styles.guidesTitle}>Learning Guides</Text>
+              <TouchableOpacity onPress={handleViewGuides} style={styles.viewAllButton}>
+                <Text style={styles.viewAllText}>View All</Text>
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity onPress={handleViewGuides} style={styles.guidesCard}>
+              <View style={styles.guidesCardContent}>
+                <Text style={styles.guidesCardTitle}>Explore Guides</Text>
+                <Text style={styles.guidesCardSubtitle}>
+                  Learn how to use Nexus Learn effectively with our comprehensive guides Tips and Tricks.
+                </Text>
+              </View>
+              <Text style={styles.guidesCardArrow}>→</Text>
+            </TouchableOpacity>
+          </View>
+          
           {/* What's New Section */}
           <View style={styles.whatsNewContainer}>
             <View style={styles.whatsNewHeader}>
@@ -234,7 +257,7 @@ export default function HomePage() {
             <View style={styles.updatesContainer}>
               {updates.length > 0 ? (
                 updates.map((update) => (
-                  <View key={update.id} style={styles.updateItem}>
+                  <TouchableOpacity key={update.id} style={styles.updateItem} onPress={handleViewUpdates}>
                     <View style={styles.updateHeader}>
                       <View style={{ flexDirection: 'row', gap: 6 }}>
                         {(Array.isArray(update.category) ? update.category : [update.category]).map((tag, idx) => (
@@ -243,13 +266,16 @@ export default function HomePage() {
                           </View>
                         ))}
                       </View>
-                      <Text style={styles.updateDate}>{formatDate(update.date)}</Text>
+                      <View style={styles.updateDateContainer}>
+                        <Text style={styles.updateDate}>{formatDate(update.date)}</Text>
+                        <Text style={styles.updateArrow}>→</Text>
+                      </View>
                     </View>
                     <Text style={styles.updateTitle}>{update.heading}</Text>
                     <Text style={styles.updateDescription}>
                       {update.text.length > 100 ? `${update.text.slice(0, 100)}...` : update.text}
                     </Text>
-                  </View>
+                  </TouchableOpacity>
                 ))
               ) : (
                 <View style={styles.noUpdatesContainer}>
@@ -327,6 +353,67 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 20,
   },
+  guidesContainer: {
+    width: '100%',
+    marginBottom: 24,
+  },
+  guidesHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  guidesTitle: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  viewAllButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    backgroundColor: '#2196F3',
+  },
+  viewAllText: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  guidesDescription: {
+    color: '#999',
+    fontSize: 13,
+    marginBottom: 12,
+    lineHeight: 18,
+  },
+  guidesCard: {
+    backgroundColor: '#1a1a1a',
+    padding: 16,
+    borderRadius: 12,
+    borderLeftWidth: 4,
+    borderLeftColor: '#2196F3',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  guidesCardContent: {
+    flex: 1,
+  },
+  guidesCardTitle: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  guidesCardSubtitle: {
+    color: '#ccc',
+    fontSize: 13,
+    lineHeight: 18,
+  },
+  guidesCardArrow: {
+    color: '#2196F3',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
   whatsNewContainer: {
     width: '100%',
     marginTop: 8,
@@ -369,6 +456,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 6,
   },
+  updateDateContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
   updateBadge: {
     paddingHorizontal: 8,
     paddingVertical: 2,
@@ -382,6 +474,11 @@ const styles = StyleSheet.create({
   updateDate: {
     color: '#888',
     fontSize: 11,
+  },
+  updateArrow: {
+    color: '#ffaa00',
+    fontSize: 14,
+    fontWeight: 'bold',
   },
   updateTitle: {
     color: '#fff',

@@ -30,16 +30,22 @@ interface DecodedToken {
 }
 
 const StatsPage = () => {
-  const [level, setLevel] = useState<'O' | 'A'>('O');
+  const [level, setLevel] = useState<'O' | 'A' | 'IGCSE'>('O');
   const subjects = [
     { label: 'Accounting (O Level)', value: 'AccO' },
     { label: 'Maths (O Level)', value: 'MathsO' },
+    { label: 'Computer Science (O Level)', value: 'CSO' },
     { label: 'Accounting (A Level)', value: 'Acc' },
     { label: 'Further Maths (A Level)', value: 'FM' },
     { label: 'Computer Science (A Level)', value: 'CS' },
     { label: 'Information Technology (A Level)', value: 'IT' },
     { label: 'Physics (A Level)', value: 'Physics' },
-    {label: 'Mathematics (A Level)', value: 'Maths'},
+    { label: 'Mathematics (A Level)', value: 'Maths' },
+    { label: 'Accounting (IGCSE)', value: 'AccIGCSE' },
+    { label: 'Maths (IGCSE)', value: 'MathsIGCSE' },
+    { label: 'Computer Science (IGCSE)', value: 'CSIGCSE' },
+    { label: 'Physics (IGCSE)', value: 'PhysicsIGCSE' },
+    {label: 'Islamiyat (Olevel/IGCSE)' , value: 'IslamiyatO'}
   ];
   const oLevelPapers = [
     { label: 'P1 (11,12,13)', value: '1' },
@@ -53,6 +59,12 @@ const StatsPage = () => {
     { label: 'Paper 4', value: '4' },
     { label: 'Paper 5', value: '5' },
     { label: 'Paper 6', value: '6' },
+  ];
+  const igcsePapers = [
+    { label: 'P1 (11,12,13)', value: '1' },
+    { label: 'P2 (21,22,23)', value: '2' },
+    { label: 'P3 (31,32,33)', value: '3' },
+    { label: 'P4 (41,42,43)', value: '4' },
   ];
 
   const [username, setUsername] = useState<string | null>(null);
@@ -71,8 +83,11 @@ const StatsPage = () => {
     if (level === 'O') {
       setSubject('AccO');
       setPaperFilter('1');
-    } else {
+    } else if (level === 'A') {
       setSubject('Acc');
+      setPaperFilter('1');
+    } else if (level === 'IGCSE') {
+      setSubject('AccIGCSE');
       setPaperFilter('1');
     }
   }, [level]);
@@ -138,6 +153,8 @@ const StatsPage = () => {
   const getAvailablePapers = () => {
     if (level === 'O') {
       return oLevelPapers;
+    } else if (level === 'IGCSE') {
+      return igcsePapers;
     } else {
       // For A Level, check if subject is Maths or Physics to show papers 5,6
       const isMathsOrPhysics = subject === 'FM' || subject === 'Physics';
@@ -269,6 +286,7 @@ const StatsPage = () => {
           >
             <Picker.Item label="O Level" value="O" />
             <Picker.Item label="A Level" value="A" />
+            <Picker.Item label="IGCSE" value="IGCSE" />
           </Picker>
         </View>
 
@@ -282,7 +300,11 @@ const StatsPage = () => {
             dropdownIconRippleColor="#ffaa00"
           >
             {subjects
-              .filter(s => (level === 'O' ? s.value.endsWith('O') : !s.value.endsWith('O')))
+              .filter(s => {
+                if (level === 'O') return s.value.endsWith('O');
+                if (level === 'IGCSE') return s.value.endsWith('IGCSE');
+                return !s.value.endsWith('O') && !s.value.endsWith('IGCSE');
+              })
               .map(s => (
                 <Picker.Item key={s.value} label={s.label} value={s.value} />
               ))}

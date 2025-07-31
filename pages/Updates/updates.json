@@ -48,6 +48,20 @@
       "text": "I wanna kms...again",
       "date": "2025-07-30",
       "category": ["Content","UI/UX","Bug Fix"]
+    },
+    {
+      "id":8,
+      "heading": "Added 5 years of O level and IGCSE CS , O level Maths Yearly past papers and O level maths P1 and P2 Topicals",
+      "text" : "just read the title... ",
+      "date" :"2025-07-31",
+      "category": ["Content"]
+    },
+    {
+      "id" : 9,
+      "heading" : "Added 5 years of O level Islamiyat Past Papers and Notes for P1 and P2",
+      "text": "The notes are from Sir Muzammil btw",
+      "date": "2025-07-31",
+      "category": ["Content"]
     }
   ]
 }

@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "title": "How to view and Understand your Performance Metrics for Yearly Past Papers",
+        "text": "To view your performance metrics for yearly past papers, go to the 'Insights' section in the app. Here, you can see your scores for every subject and paper variant you have attempted. This helps you track your progress and understand your consistency across different papers. You might also come across some codes such as M2431 on the x axis. This translates to March 2024, Paper 2, Variant 31 codes beginning with M are for March, S for May/June, and W for Oct/November. The first 2 digits indicate year i.e. 24 for 2024, and the last 2 digits indicate the paper variant i.e. 31 for variant 31.",
+        "category": "Tutorial"
+    },
+  {
+    "id": 2,
+    "title": "How to View Content Offline",
+    "text": "When you open/view any resource (while online), it automatically gets downloaded to your device so that you can even view it when offline.Keep in mind that since this is cached content, it will be deleted if you uninstall the app or clear the app data. To manage your offline content, go to the 'Offline Content' section in the app settings. Here, you can see all the resources that are available offline and remove any that you no longer need.You can also download the specific resources you want to view offline by tapping the download icon next to each resource in your drive viewer. This will save them to your phones download folder",
+    "category": "Tips"
+  },
+  {
+        "id": 3,
+        "title": "How to Find Yearly Past Papers",
+        "text": "To find past papers for a specific year, navigate to the relevant subject section, select the year you are interested in, and then choose the session (e.g., May/June or Oct/Nov) and then the paper variants you want to view. It will then show all relevant papers for that year,session,subject etc.",
+        "category": "Tutorial"
+},
+    {
+        "id": 4,
+        "title": "How to Contribute, Report issues or provide other feedback",
+        "text": "You can contribute by adding resources, fixing typos, or suggesting improvements. Visit the 'Contribute' section in the app for more details.",
+        "category": "Tutorial"
+    },
+    {
+        "id": 5,
+        "title": "why is the data between the IGCSE and O level CS pages shared?",
+        "text": "O level and IGCSE CS both share the exact same papers for every session except IGCSE had 1 more session (Feb/March) and 1 more variant (Variant 23) so I instead decided to share their data since the papers are identical.",
+        "category": ["FAQ's"]
+    }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "name": "CUP book",
+    "text1": "View Book",
+    "link1": "https://drive.google.com/file/d/1cKDww-7XdOl6kRtbgfQDJk9JjiR4iebv/view?usp=sharing",
+    "size": "3"
+  },
+  {
+    "name": "HodderTextbook",
+    "text1": "View Book",
+    "link1": "https://drive.google.com/file/d/1KMTT6UfoJGL2flOTujf4UsZ-EXHRmsag/view?usp=drive_link",
+    "size": "3"
+  },
+  {
+    "name": "Hodder-Workbook",
+    "text1": "View Book",
+    "link1": "https://drive.google.com/file/d/1t3sFO0UcDtUWetfUu_9DwWmIWCnUR5BZ/view?usp=sharing",
+    "size": "1"
+  }
+]

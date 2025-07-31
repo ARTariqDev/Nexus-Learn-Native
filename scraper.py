@@ -17,19 +17,19 @@ load_dotenv()
 
 # ---------------------------- Configuration ----------------------------
 # Choose source: "pastpapers" or "papacambridge"
-SOURCE = "pastpapers"  # or "pastpapers"
+SOURCE = "papacambridge"  # or "pastpapers"
 
 # For pastpapers.co aka the GOAT
 PASTPAPERS_BASE_URL = "https://pastpapers.co"
-pastpapers_subject_path = "A-Level/Mathematics-9709/2020%20March"
+pastpapers_subject_path = "IGCSE/Computer-Science-0478/2024-March"
 
 # For bum ass PapaCambridge....I hate it never works ....but I have to keep it as a backup in case pastpapers.co doesnt work ,-_-,
 PAPACAMBRIDGE_BASE_URL = "https://pastpapers.papacambridge.com"
 
-papacambridge_subject_path = "A-Level/Mathematics-9709/2020-Oct-Nov"
+papacambridge_subject_path = "papers/caie/o-level-islamiyat-2058-may-june-2020"
 
-session_name = "March 2020"
-drive_parent_folder_id = "1WsACt_7cPq5-zE2z3o62osp4YoUIM6N5"
+session_name = "June 2020"
+drive_parent_folder_id = "1HKDSfSF89UQs4cLQpHIMCATEkhJuXdsW"
 DOWNLOAD_DIR = "downloads"
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
 # -----------------------------------------------------------------------

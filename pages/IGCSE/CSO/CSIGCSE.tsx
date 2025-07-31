@@ -12,22 +12,20 @@ import { useNavigation } from '@react-navigation/native';
 import Footer from 'components/BottomMenu';
 import Yearly from 'components/Yearly';
 import PDF from 'components/PDF';
-import mathsYearlyData from './MathsO_Yearly.json';
-import mathsBooks from './MathsO_Books.json';
-import mathsTopicalData from './MathsO_Topical.json'; // Added topical data import
+import CSOYearlyData from './CSO_Yearly.json';
+import CSOBooks from './CSO_Books.json';
 import { useFonts } from 'expo-font';
 import Header from 'components/Header';
 import { Picker } from '@react-native-picker/picker';
 
-export default function MathsOPage() {
+export default function CSIGCSEPage() {
   const navigation = useNavigation();
   const [user, setUser] = useState(null);
-  const [year, setYear] = useState('2024');
-  const [session, setSession] = useState('november');
+  const [year, setYear] = useState('2025');
+  const [session, setSession] = useState('march');
   const [paperGroup, setPaperGroup] = useState('1');
   const [showBooks, setShowBooks] = useState(false);
   const [showPapers, setShowPapers] = useState(false);
-  const [showTopical, setShowTopical] = useState(false); // Added topical state
 
   const [fontsLoaded] = useFonts({
     Monoton: require('../../../assets/fonts/Monoton-Regular.ttf'),
@@ -46,12 +44,22 @@ export default function MathsOPage() {
   }, []);
 
   // Extract all years from data
-  const allYears = [...new Set(mathsYearlyData.map((item) => item.id.split('_')[1]))].sort().reverse();
+  const allYears = [...new Set(CSOYearlyData.map((item) => item.id.split('_')[1]))].sort().reverse();
   
-  // Filter for session, year, and paper group
-  const filtered = mathsYearlyData.filter((item) => {
+  // Filter for session, year, and paper group with improved session matching
+  const filtered = CSOYearlyData.filter((item) => {
     const [sess, yr, code] = item.id.split('_');
-    return sess === session.toLowerCase() && yr === year && code.startsWith(paperGroup);
+    
+    // Handle different session naming conventions
+    const sessionMatch = 
+      sess === session.toLowerCase() || 
+      (session === 'may' && (sess === 'june' || sess === 'may')) ||
+      (session === 'june' && (sess === 'june' || sess === 'may')) ||
+      (session === 'november' && (sess === 'november' || sess === 'october')) ||
+      (session === 'october' && (sess === 'november' || sess === 'october')) ||
+      (session === 'march' && (sess === 'march' || sess === 'february'));
+    
+    return sessionMatch && yr === year && code.startsWith(paperGroup);
   });
 
   if (!fontsLoaded) {
@@ -68,7 +76,7 @@ export default function MathsOPage() {
       <Header />
       <ScrollView contentContainerStyle={styles.contentContainer}>
         {/* Page Title */}
-        <Text style={[styles.pageTitle, { fontFamily: 'Monoton' }]}>O Level Mathematics 4024</Text>
+        <Text style={[styles.pageTitle, { fontFamily: 'Monoton' }]}>O Level/IGCSE Computer Science 2210/0478</Text>
 
         {/* Books Section */}
         <View style={styles.section}>
@@ -80,7 +88,7 @@ export default function MathsOPage() {
           </View>
           {showBooks && (
             <View style={styles.bookList}>
-              {mathsBooks.map((book, idx) => (
+              {CSOBooks.map((book, idx) => (
                 <View key={idx} style={styles.bookRow}>
                   <PDF {...book} />
                 </View>
@@ -89,30 +97,7 @@ export default function MathsOPage() {
           )}
         </View>
 
-        {/* Topical Past Papers Section */}
-        <View style={styles.section}>
-          <View style={styles.headerRow}>
-            <Text style={[styles.sectionTitle, { fontFamily: 'Monoton' }]}>Topical Past Papers</Text>
-            <TouchableOpacity onPress={() => setShowTopical(!showTopical)} style={styles.toggleButton}>
-              <Text style={styles.toggleButtonText}>{showTopical ? 'Hide' : 'Show'}</Text>
-            </TouchableOpacity>
-          </View>
-          {showTopical && (
-            <View style={styles.topicalList}>
-              {mathsTopicalData.length > 0 ? (
-                mathsTopicalData.map((item, index) => (
-                  <View key={index} style={styles.topicalRow}>
-                    <PDF {...item} />
-                  </View>
-                ))
-              ) : (
-                <Text style={styles.noResultsText}>No topical papers available.</Text>
-              )}
-            </View>
-          )}
-        </View>
-
-        {/* Yearly Past Papers Section */}
+        {/* Past Papers Section */}
         <View style={styles.section}>
           <View style={styles.headerRow}>
             <Text style={[styles.sectionTitle, { fontFamily: 'Monoton' }]}>Yearly Past Papers</Text>
@@ -153,6 +138,7 @@ export default function MathsOPage() {
                   >
                     <Picker.Item label="May/June" value="may" />
                     <Picker.Item label="Oct/Nov" value="november" />
+                    <Picker.Item label="Feb/Mar" value="march" />
                   </Picker>
                 </View>
               </View>
@@ -177,7 +163,7 @@ export default function MathsOPage() {
               <View style={styles.grid}>
                 {filtered.length > 0 ? (
                   filtered.map((item, index) => (
-                    <Yearly key={index} {...item} subject="MathsO" />
+                    <Yearly key={index} {...item} subject="CSO" />
                   ))
                 ) : (
                   <Text style={styles.noResultsText}>No papers found for this selection.</Text>
@@ -249,17 +235,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
   },
-  topicalList: {
-    flexDirection: 'column',
-    gap: 14,
-    alignItems: 'center',
-    width: '100%',
-  },
-  topicalRow: {
-    width: '98%',
-    alignItems: 'center',
-    alignSelf: 'center',
-  },
   selectorRow: {
     marginBottom: 12,
   },
@@ -279,6 +254,11 @@ const styles = StyleSheet.create({
     color: '#fff',
     height: 55,
     width: '100%',
+  },
+  grid: {
+    flexDirection: 'column',
+    gap: 16,
+    marginTop: 16,
   },
   noResultsText: {
     color: '#888',

@@ -17,14 +17,16 @@ import PDF from 'components/PDF';
 import Yearly from 'components/Yearly';
 import topicals from './Maths_Topicals.json';
 import mathsYearlyData from './Maths_Yearly.json';
+import mathsBooksData from './Maths_Books.json';
 
 export default function MathsPage() {
   const [user, setUser] = useState(null);
   const [showTopicals, setShowTopicals] = useState(false);
   const [showP3Topicals, setShowP3Topicals] = useState(false);
   const [showPapers, setShowPapers] = useState(false);
-  const [year, setYear] = useState('2024');
-  const [session, setSession] = useState('november');
+  const [showBooks, setShowBooks] = useState(false);
+  const [year, setYear] = useState('2025');
+  const [session, setSession] = useState('march');
   const [paperGroup, setPaperGroup] = useState('1');
   const navigation = useNavigation();
 
@@ -52,6 +54,10 @@ export default function MathsPage() {
   const toggleP3Topicals = () => {
     setShowP3Topicals(prev => !prev);
     setShowTopicals(false);
+  };
+
+  const toggleBooks = () => {
+    setShowBooks(prev => !prev);
   };
 
   // Get all unique years from the yearly data and sort them
@@ -116,6 +122,26 @@ export default function MathsPage() {
           {showP3Topicals && (
             <View style={styles.grid}>
               {topicals.p3.map((item, idx) => (
+                <View key={idx} style={styles.pdfCard}>
+                  <PDF {...item} />
+                </View>
+              ))}
+            </View>
+          )}
+        </View>
+
+        {/* Books Section */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={[styles.sectionTitle, { fontFamily: 'Monoton' }]}>Books</Text>
+            <TouchableOpacity onPress={toggleBooks} style={styles.toggleButton}>
+              <Text style={styles.toggleButtonText}>{showBooks ? 'Hide' : 'Show'}</Text>
+            </TouchableOpacity>
+          </View>
+
+          {showBooks && (
+            <View style={styles.grid}>
+              {mathsBooksData.map((item, idx) => (
                 <View key={idx} style={styles.pdfCard}>
                   <PDF {...item} />
                 </View>
@@ -232,6 +258,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     marginBottom: 20,
+    height: 'auto'
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -265,7 +292,6 @@ const styles = StyleSheet.create({
     width: '155%',
     aspectRatio: 3 / 4,
     borderRadius: 8,
-    marginBottom: 16,
     overflow: 'hidden',
   },
   selectorRow: {

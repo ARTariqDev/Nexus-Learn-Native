@@ -12,22 +12,20 @@ import { useNavigation } from '@react-navigation/native';
 import Footer from 'components/BottomMenu';
 import Yearly from 'components/Yearly';
 import PDF from 'components/PDF';
-import mathsYearlyData from './MathsO_Yearly.json';
-import mathsBooks from './MathsO_Books.json';
-import mathsTopicalData from './MathsO_Topical.json'; // Added topical data import
+import islamiyatYearlyData from './IslamiyatO_Yearly.json';
+import islamiyatNotes from './IslamiyatO_Notes.json';
 import { useFonts } from 'expo-font';
 import Header from 'components/Header';
 import { Picker } from '@react-native-picker/picker';
 
-export default function MathsOPage() {
+export default function IslamiyatOPage() {
   const navigation = useNavigation();
   const [user, setUser] = useState(null);
   const [year, setYear] = useState('2024');
   const [session, setSession] = useState('november');
   const [paperGroup, setPaperGroup] = useState('1');
-  const [showBooks, setShowBooks] = useState(false);
+  const [showNotes, setShowNotes] = useState(false);
   const [showPapers, setShowPapers] = useState(false);
-  const [showTopical, setShowTopical] = useState(false); // Added topical state
 
   const [fontsLoaded] = useFonts({
     Monoton: require('../../../assets/fonts/Monoton-Regular.ttf'),
@@ -45,11 +43,8 @@ export default function MathsOPage() {
     checkToken();
   }, []);
 
-  // Extract all years from data
-  const allYears = [...new Set(mathsYearlyData.map((item) => item.id.split('_')[1]))].sort().reverse();
-  
-  // Filter for session, year, and paper group
-  const filtered = mathsYearlyData.filter((item) => {
+  const allYears = [...new Set(islamiyatYearlyData.map((item) => item.id.split('_')[1]))].sort().reverse();
+  const filtered = islamiyatYearlyData.filter((item) => {
     const [sess, yr, code] = item.id.split('_');
     return sess === session.toLowerCase() && yr === year && code.startsWith(paperGroup);
   });
@@ -68,51 +63,28 @@ export default function MathsOPage() {
       <Header />
       <ScrollView contentContainerStyle={styles.contentContainer}>
         {/* Page Title */}
-        <Text style={[styles.pageTitle, { fontFamily: 'Monoton' }]}>O Level Mathematics 4024</Text>
+        <Text style={[styles.pageTitle, { fontFamily: 'Monoton' }]}>
+          O Level Islamiyat
+        </Text>
 
-        {/* Books Section */}
+        {/* Notes Section */}
         <View style={styles.section}>
           <View style={styles.headerRow}>
-            <Text style={[styles.sectionTitle, { fontFamily: 'Monoton' }]}>Books</Text>
-            <TouchableOpacity onPress={() => setShowBooks(!showBooks)} style={styles.toggleButton}>
-              <Text style={styles.toggleButtonText}>{showBooks ? 'Hide' : 'Show'}</Text>
+            <Text style={[styles.sectionTitle, { fontFamily: 'Monoton' }]}>Notes</Text>
+            <TouchableOpacity onPress={() => setShowNotes(!showNotes)} style={styles.toggleButton}>
+              <Text style={styles.toggleButtonText}>{showNotes ? 'Hide' : 'Show'}</Text>
             </TouchableOpacity>
           </View>
-          {showBooks && (
-            <View style={styles.bookList}>
-              {mathsBooks.map((book, idx) => (
-                <View key={idx} style={styles.bookRow}>
-                  <PDF {...book} />
-                </View>
+          {showNotes && (
+            <View style={styles.grid}>
+              {islamiyatNotes.map((note, index) => (
+                <PDF key={index} {...note} />
               ))}
             </View>
           )}
         </View>
 
-        {/* Topical Past Papers Section */}
-        <View style={styles.section}>
-          <View style={styles.headerRow}>
-            <Text style={[styles.sectionTitle, { fontFamily: 'Monoton' }]}>Topical Past Papers</Text>
-            <TouchableOpacity onPress={() => setShowTopical(!showTopical)} style={styles.toggleButton}>
-              <Text style={styles.toggleButtonText}>{showTopical ? 'Hide' : 'Show'}</Text>
-            </TouchableOpacity>
-          </View>
-          {showTopical && (
-            <View style={styles.topicalList}>
-              {mathsTopicalData.length > 0 ? (
-                mathsTopicalData.map((item, index) => (
-                  <View key={index} style={styles.topicalRow}>
-                    <PDF {...item} />
-                  </View>
-                ))
-              ) : (
-                <Text style={styles.noResultsText}>No topical papers available.</Text>
-              )}
-            </View>
-          )}
-        </View>
-
-        {/* Yearly Past Papers Section */}
+        {/* Past Papers Section */}
         <View style={styles.section}>
           <View style={styles.headerRow}>
             <Text style={[styles.sectionTitle, { fontFamily: 'Monoton' }]}>Yearly Past Papers</Text>
@@ -151,7 +123,7 @@ export default function MathsOPage() {
                     mode="dropdown"
                     dropdownIconRippleColor="#ffaa00"
                   >
-                    <Picker.Item label="May/June" value="may" />
+                    <Picker.Item label="May/June" value="june" />
                     <Picker.Item label="Oct/Nov" value="november" />
                   </Picker>
                 </View>
@@ -177,7 +149,7 @@ export default function MathsOPage() {
               <View style={styles.grid}>
                 {filtered.length > 0 ? (
                   filtered.map((item, index) => (
-                    <Yearly key={index} {...item} subject="MathsO" />
+                    <Yearly key={index} {...item} subject="IslamiyatO" />
                   ))
                 ) : (
                   <Text style={styles.noResultsText}>No papers found for this selection.</Text>
@@ -188,6 +160,7 @@ export default function MathsOPage() {
         </View>
       </ScrollView>
 
+      {/* Footer */}
       <View style={styles.footerWrapper}>
         <Footer />
       </View>
@@ -238,27 +211,11 @@ const styles = StyleSheet.create({
     color: '#000',
     fontWeight: 'bold',
   },
-  bookList: {
-    flexDirection: 'column',
-    gap: 14,
-    alignItems: 'center',
-    width: '100%',
-  },
-  bookRow: {
-    width: '98%',
-    alignItems: 'center',
-    alignSelf: 'center',
-  },
-  topicalList: {
-    flexDirection: 'column',
-    gap: 14,
-    alignItems: 'center',
-    width: '100%',
-  },
-  topicalRow: {
-    width: '98%',
-    alignItems: 'center',
-    alignSelf: 'center',
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 16,
+    justifyContent: 'space-between',
   },
   selectorRow: {
     marginBottom: 12,

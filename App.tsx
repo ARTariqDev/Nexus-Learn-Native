@@ -24,6 +24,11 @@ import Blog from 'pages/Updates/Blog';
 import Contribute from 'pages/Contribute';
 import AccOPage from 'pages/Olevel/AccO/AccO';
 import MathsOPage from 'pages/Olevel/MathsO/MathsO';
+import Guide from 'pages/Guides/Guide';
+import GuidesPage from 'pages/Guides/GuidesPage';
+import CSOPage from 'pages/Olevel/CSO/CSO';
+import CSIGCSEPage from 'pages/IGCSE/CSO/CSIGCSE';
+import IslamiyatOPage from 'pages/Olevel/Islamiyat/IslamiaytO';
 
 
 const Stack = createNativeStackNavigator();
@@ -69,6 +74,11 @@ export default function App() {
         <Stack.Screen name="Contribute" component={Contribute} options={{ headerShown: false }} />
         <Stack.Screen name="AccO" component={AccOPage} options={{ headerShown: false }} />
         <Stack.Screen name="MathsO" component={MathsOPage} options={{ headerShown: false }} />
+        <Stack.Screen name="GuidesPage" component={GuidesPage} options={{ headerShown: false }} />
+        <Stack.Screen name="Guide" component={Guide} options={{ headerShown: false }} />
+        <Stack.Screen name="CSO" component={CSOPage} options={{ headerShown: false }} />
+        <Stack.Screen name="CSIGCSE" component={CSIGCSEPage} options={{ headerShown: false }} />
+        <Stack.Screen name="IslamiyatO" component={IslamiyatOPage} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

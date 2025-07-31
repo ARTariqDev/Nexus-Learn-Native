@@ -52,9 +52,9 @@ export default function OlevelPage() {
           <Text style={styles.title}>Olevel</Text>
           <View style={styles.grid}>
             <ResourcesCard title="Accounting 7707" route="AccO" />
-                        <ResourcesCard title="Maths 4024" route="MathsO" />
-            <ResourcesCard title="CS 2210" route="ICT" />
-            <ResourcesCard title="Islamiyat 2058" route="Islamiyat" />
+            <ResourcesCard title="Maths 4024" route="MathsO" />
+            <ResourcesCard title="CS 2210" route="CSO" />
+            <ResourcesCard title="Islamiyat 2058" route="IslamiyatO" />
             <ResourcesCard title="Add Maths 4037" route="AMO" />
           </View>
         </View>
