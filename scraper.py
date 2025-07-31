@@ -26,10 +26,10 @@ pastpapers_subject_path = "IGCSE/Computer-Science-0478/2024-March"
 # For bum ass PapaCambridge....I hate it never works ....but I have to keep it as a backup in case pastpapers.co doesnt work ,-_-,
 PAPACAMBRIDGE_BASE_URL = "https://pastpapers.papacambridge.com"
 
-papacambridge_subject_path = "papers/caie/o-level-islamiyat-2058-may-june-2020"
+papacambridge_subject_path = "papers/caie/o-level-islamiyat-2058-2019-oct-nov"
 
-session_name = "June 2020"
-drive_parent_folder_id = "1HKDSfSF89UQs4cLQpHIMCATEkhJuXdsW"
+session_name = "November 2019"
+drive_parent_folder_id = "1myUZSi5aZPR9bLTbcPQqiPfA2e552c-T"
 DOWNLOAD_DIR = "downloads"
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
 # -----------------------------------------------------------------------
@@ -122,7 +122,7 @@ def scrape_papacambridge():
     res = requests.get(full_url, headers=headers)
     soup = BeautifulSoup(res.text, 'html.parser')
 
-    # Look for download links on the papers page
+
     links = soup.select("a[href*='download_file.php']")
     paper_dict = {}
 
@@ -133,7 +133,7 @@ def scrape_papacambridge():
         if not href:
             continue
 
-        # Extract the actual PDF URL from the files parameter
+
         if "files=" in href:
             files_param = href.split("files=")[-1]
             actual_pdf_url = unquote(files_param)
@@ -143,13 +143,13 @@ def scrape_papacambridge():
 
         print(f"📄 Processing: {filename}")
 
-        # Build the full download URL
+
         if href.startswith("http"):
             full_link = href
         else:
             full_link = urljoin(PAPACAMBRIDGE_BASE_URL, href)
 
-        # ONLY match QP, MS, and SF patterns - exclude GT, ER, CI
+
         qp_match = re.search(r"(\d{4})_[wsm]\d{2}_qp_(\d{1,2})\.pdf", filename, re.IGNORECASE)
         ms_match = re.search(r"(\d{4})_[wsm]\d{2}_ms_(\d{1,2})\.pdf", filename, re.IGNORECASE)
         sf_match = re.search(r"(\d{4})_[wsm]\d{2}_sf_(\d{1,2})\.(zip|pdf)", filename, re.IGNORECASE)
@@ -167,7 +167,7 @@ def scrape_papacambridge():
             paper_dict.setdefault(variant, {})["sf"] = full_link
             print(f"  ✅ Found SF for variant {variant}")
         else:
-            # Skip GT, ER, CI files silently
+
             if not any(x in filename.lower() for x in ['_gt.', '_er_', '_ci_']):
                 print(f"  ⚠️ Unrecognized file pattern: {filename}")
 
@@ -259,7 +259,7 @@ def create_drive_folder(service, name, parent_id):
 def build_metadata(service, paper_dict):
     metadata = []
     for variant in sorted(paper_dict.keys()):
-        # Skip non-numeric variants (like 'gt')
+
         if not variant.isdigit():
             continue
             
@@ -272,7 +272,7 @@ def build_metadata(service, paper_dict):
         qp_path = os.path.join(folder_path, f"qp{variant}.pdf")
         ms_path = os.path.join(folder_path, f"ms{variant}.pdf")
         
-        # Handle both .zip and .pdf SF files
+
         sf_path_zip = os.path.join(folder_path, f"sf{variant}.zip")
         sf_path_pdf = os.path.join(folder_path, f"sf{variant}.pdf")
         sf_path = sf_path_zip if os.path.exists(sf_path_zip) else sf_path_pdf
@@ -299,7 +299,7 @@ def build_metadata(service, paper_dict):
         else:
             print(f"  ⚠️ SF not found: {sf_path_zip} or {sf_path_pdf}")
 
-        # Format according to the specified structure
+
         metadata.append({
             "name": f"{session_name}-{variant}",
             "size": "3",
