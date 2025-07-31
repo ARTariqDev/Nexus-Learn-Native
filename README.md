@@ -23,7 +23,6 @@ Before running this project, make sure you have the following installed:
 - npm or yarn
 - React Native/Expo CLI
 - Android Studio (for Android development)
-- Xcode (for iOS development - macOS only)
 - Java Development Kit (JDK)
 
 ## Installation
@@ -41,18 +40,12 @@ Before running this project, make sure you have the following installed:
    yarn install
    ```
 
-4. **Set up environment variables**
-   ```bash
-   cp .env.example .env
-   ```
-   Fill in your configuration values in the `.env` file.
-
-5. **Start Metro bundler**
+3. **Start Metro bundler**
    ```bash
    npx expo start
    ```
 
-6. **Run the application**
+4. **Run the application**
 
    For Android:
    ```bash
@@ -61,12 +54,6 @@ Before running this project, make sure you have the following installed:
    yarn android
    ```
 
-   For iOS:
-   ```bash
-   npm run ios
-   # or
-   yarn ios
-   ```
 
 ## Project Structure
 
@@ -103,4 +90,4 @@ nexus-learn-native/
 
 ---
 
-**Made with ❤️ by ARTariqDev Team**
+**Made with ❤️ by ARTariqDev**
