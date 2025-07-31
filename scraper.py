@@ -15,7 +15,7 @@ from urllib.parse import urlparse, urljoin, unquote
 # Load env vars
 load_dotenv()
 
-# ---------------------------- Configuration ----------------------------
+
 # Choose source: "pastpapers" or "papacambridge"
 SOURCE = "papacambridge"  # or "pastpapers"
 
@@ -26,13 +26,13 @@ pastpapers_subject_path = "IGCSE/Computer-Science-0478/2024-March"
 # For bum ass PapaCambridge....I hate it never works ....but I have to keep it as a backup in case pastpapers.co doesnt work ,-_-,
 PAPACAMBRIDGE_BASE_URL = "https://pastpapers.papacambridge.com"
 
-papacambridge_subject_path = "papers/caie/o-level-islamiyat-2058-2019-oct-nov"
+papacambridge_subject_path = "papers/caie/o-level-islamiyat-2058-2018-may-june"
 
-session_name = "November 2019"
-drive_parent_folder_id = "1myUZSi5aZPR9bLTbcPQqiPfA2e552c-T"
+session_name = "June 2018"
+drive_parent_folder_id = "1VqzI__D7sAWVKfNjW2Zmo27vqGPp5MDt"
 DOWNLOAD_DIR = "downloads"
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
-# -----------------------------------------------------------------------
+
 
 def get_drive_service():
     creds = None
